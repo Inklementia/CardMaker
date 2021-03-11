@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{3E76B810-ABD6-4A05-9A29-4EA71C59FE52}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CardMaker", "CardMaker\CardMaker.csproj", "{86DBFB10-697F-4EEB-BE7B-97896124A04E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{3E76B810-ABD6-4A05-9A29-4EA71C59FE52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{3E76B810-ABD6-4A05-9A29-4EA71C59FE52}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{3E76B810-ABD6-4A05-9A29-4EA71C59FE52}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{3E76B810-ABD6-4A05-9A29-4EA71C59FE52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{86DBFB10-697F-4EEB-BE7B-97896124A04E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{86DBFB10-697F-4EEB-BE7B-97896124A04E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{86DBFB10-697F-4EEB-BE7B-97896124A04E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{86DBFB10-697F-4EEB-BE7B-97896124A04E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {64B9848A-F2D2-4760-B22B-B0C1E0E38ABB}
+		SolutionGuid = {B4156A98-96C4-4476-B008-62AF13473817}
 	EndGlobalSection
 EndGlobal
