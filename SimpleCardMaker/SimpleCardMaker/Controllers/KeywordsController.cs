@@ -6,23 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SimpleCardMaker.DAL;
+using SimpleCardMaker.DAL.DBO;
+using SimpleCardMaker.DAL.Repositories;
 using SimpleCardMaker.Models;
 
 namespace SimpleCardMaker.Controllers
 {
     public class KeywordsController : Controller
     {
-        private readonly CardDbContext _context;
+        private readonly IRepository<Keyword> _keywordRepo;
 
-        public KeywordsController(CardDbContext context)
+        public KeywordsController(IRepository<Keyword> keywordRepo)
         {
-            _context = context;
+            _keywordRepo = keywordRepo;
         }
 
         // GET: Keywords
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Keywords.ToListAsync());
+            return View(await _keywordRepo.GetAllAsync());
         }
 
         // GET: Keywords/Details/5
@@ -33,8 +35,8 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var keyword = await _context.Keywords
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var keyword = await _keywordRepo.GetByIdAsync(id.Value);
+               
             if (keyword == null)
             {
                 return NotFound();
@@ -58,8 +60,7 @@ namespace SimpleCardMaker.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(keyword);
-                await _context.SaveChangesAsync();
+                await _keywordRepo.CreateAsync(keyword);
                 return RedirectToAction(nameof(Index));
             }
             return View(keyword);
@@ -73,7 +74,7 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var keyword = await _context.Keywords.FindAsync(id);
+            var keyword =  await _keywordRepo.GetByIdAsync(id.Value);
             if (keyword == null)
             {
                 return NotFound();
@@ -97,12 +98,11 @@ namespace SimpleCardMaker.Controllers
             {
                 try
                 {
-                    _context.Update(keyword);
-                    await _context.SaveChangesAsync();
+                    await _keywordRepo.UpdateAsync(keyword);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!KeywordExists(keyword.Id))
+                    if (!_keywordRepo.Exists(keyword.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +124,7 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var keyword = await _context.Keywords
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var keyword = await _keywordRepo.GetByIdAsync(id.Value);
             if (keyword == null)
             {
                 return NotFound();
@@ -139,15 +138,10 @@ namespace SimpleCardMaker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var keyword = await _context.Keywords.FindAsync(id);
-            _context.Keywords.Remove(keyword);
-            await _context.SaveChangesAsync();
+            await _keywordRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool KeywordExists(int id)
-        {
-            return _context.Keywords.Any(e => e.Id == id);
-        }
+     
     }
 }

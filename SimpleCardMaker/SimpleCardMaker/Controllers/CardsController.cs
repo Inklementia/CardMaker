@@ -8,26 +8,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SimpleCardMaker.DAL;
+using SimpleCardMaker.DAL.DBO;
+using SimpleCardMaker.DAL.Repositories;
 using SimpleCardMaker.Models;
 
 namespace SimpleCardMaker.Controllers
 {
     public class CardsController : Controller
     {
-        private readonly CardDbContext _context;
+        private readonly IRepository<Card> _cardRepo;
+        private readonly IRepository<Keyword> _keywordRepo;
+        private readonly IRepository<UnitType> _unitTypeRepo;
+
         private readonly IWebHostEnvironment _hostEnvironment;
 
-        public CardsController(CardDbContext context, IWebHostEnvironment hostEnvironment)
+        public CardsController(
+            IRepository<Card> cardRepo,
+            IRepository<Keyword> keywordRepo,
+            IRepository<UnitType> unitTypeRepo,
+            IWebHostEnvironment hostEnvironment)
         {
-            _context = context;
+            _cardRepo = cardRepo;
+            _keywordRepo = keywordRepo;
+            _unitTypeRepo = unitTypeRepo;
             _hostEnvironment = hostEnvironment;
         }
 
         // GET: Cards
         public async Task<IActionResult> Index()
         {
-            var cardDbContext = _context.Cards.Include(c => c.Keyword).Include(c => c.UnitType);
-            return View(await cardDbContext.ToListAsync());
+            return View(await _cardRepo.GetAllAsync());
         }
 
         // GET: Cards/Details/5
@@ -38,10 +48,7 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var card = await _context.Cards
-                .Include(c => c.Keyword)
-                .Include(c => c.UnitType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var card = await _cardRepo.GetByIdAsync(id.Value);
             if (card == null)
             {
                 return NotFound();
@@ -51,10 +58,10 @@ namespace SimpleCardMaker.Controllers
         }
 
         // GET: Cards/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["KeywordId"] = new SelectList(_context.Keywords, "Id", "Name");
-            ViewData["UnitTypeId"] = new SelectList(_context.UnitTypes, "Id", "Name");
+            ViewData["KeywordId"] = new SelectList(await _keywordRepo.GetAllAsync(), "Id", "Name");
+            ViewData["UnitTypeId"] = new SelectList(await _unitTypeRepo.GetAllAsync(), "Id", "Name");
             return View();
         }
 
@@ -81,12 +88,11 @@ namespace SimpleCardMaker.Controllers
                     await card.ImageFile.CopyToAsync(fileStream);
                 }
 
-                _context.Add(card);
-                await _context.SaveChangesAsync();
+                await _cardRepo.CreateAsync(card);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["KeywordId"] = new SelectList(_context.Keywords, "Id", "Name", card.KeywordId);
-            ViewData["UnitTypeId"] = new SelectList(_context.UnitTypes, "Id", "Name", card.UnitTypeId);
+            ViewData["KeywordId"] = new SelectList(await _keywordRepo.GetAllAsync(), "Id", "Name", card.KeywordId);
+            ViewData["UnitTypeId"] = new SelectList(await _unitTypeRepo.GetAllAsync(), "Id", "Name", card.UnitTypeId);
             return View(card);
         }
 
@@ -98,13 +104,13 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var card = await _context.Cards.FindAsync(id);
+            var card = await _cardRepo.GetByIdAsync(id.Value);
             if (card == null)
             {
                 return NotFound();
             }
-            ViewData["KeywordId"] = new SelectList(_context.Keywords, "Id", "Name", card.KeywordId);
-            ViewData["UnitTypeId"] = new SelectList(_context.UnitTypes, "Id", "Name", card.UnitTypeId);
+            ViewData["KeywordId"] = new SelectList(await _keywordRepo.GetAllAsync(), "Id", "Name", card.KeywordId);
+            ViewData["UnitTypeId"] = new SelectList(await _unitTypeRepo.GetAllAsync(), "Id", "Name", card.UnitTypeId);
             return View(card);
         }
 
@@ -139,12 +145,11 @@ namespace SimpleCardMaker.Controllers
                     }
 
 
-                    _context.Update(card);
-                    await _context.SaveChangesAsync();
+                    await _cardRepo.UpdateAsync(card);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CardExists(card.Id))
+                    if (!_cardRepo.Exists(card.Id))
                     {
                         return NotFound();
                     }
@@ -155,8 +160,8 @@ namespace SimpleCardMaker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["KeywordId"] = new SelectList(_context.Keywords, "Id", "Name", card.KeywordId);
-            ViewData["UnitTypeId"] = new SelectList(_context.UnitTypes, "Id", "Name", card.UnitTypeId);
+            ViewData["KeywordId"] = new SelectList(await _keywordRepo.GetAllAsync(), "Id", "Name", card.KeywordId);
+            ViewData["UnitTypeId"] = new SelectList(await _unitTypeRepo.GetAllAsync(), "Id", "Name", card.UnitTypeId);
             return View(card);
         }
 
@@ -168,10 +173,7 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var card = await _context.Cards
-                .Include(c => c.Keyword)
-                .Include(c => c.UnitType)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var card = await _cardRepo.GetByIdAsync(id.Value);
             if (card == null)
             {
                 return NotFound();
@@ -185,15 +187,10 @@ namespace SimpleCardMaker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var card = await _context.Cards.FindAsync(id);
-            _context.Cards.Remove(card);
-            await _context.SaveChangesAsync();
+            await _cardRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CardExists(int id)
-        {
-            return _context.Cards.Any(e => e.Id == id);
-        }
+     
     }
 }

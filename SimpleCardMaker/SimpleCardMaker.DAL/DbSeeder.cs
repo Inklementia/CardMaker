@@ -1,4 +1,4 @@
-﻿using SimpleCardMaker.Models;
+﻿using SimpleCardMaker.DAL.DBO;
 using System;
 using System.Collections.Generic;
 using System.Linq;

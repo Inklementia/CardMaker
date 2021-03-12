@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace SimpleCardMaker.Models
+namespace SimpleCardMaker.DAL.DBO
 {
     public class Card
     {
@@ -40,6 +40,7 @@ namespace SimpleCardMaker.Models
         [Required(ErrorMessage = "Please, Set {0} for your card")]
         [NotMapped]
         [DisplayName("Image")]
+
         public IFormFile ImageFile { get; set; }
 
         [DisplayName("Keyword")]

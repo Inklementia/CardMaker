@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SimpleCardMaker.DAL;
 
-namespace SimpleCardMaker.Migrations
+namespace SimpleCardMaker.DAL.Migrations
 {
     [DbContext(typeof(CardDbContext))]
     partial class CardDbContextModelSnapshot : ModelSnapshot
@@ -19,7 +19,7 @@ namespace SimpleCardMaker.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("SimpleCardMaker.Models.Card", b =>
+            modelBuilder.Entity("SimpleCardMaker.DAL.DBO.Card", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -61,7 +61,7 @@ namespace SimpleCardMaker.Migrations
                     b.ToTable("Cards");
                 });
 
-            modelBuilder.Entity("SimpleCardMaker.Models.Keyword", b =>
+            modelBuilder.Entity("SimpleCardMaker.DAL.DBO.Keyword", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -81,7 +81,7 @@ namespace SimpleCardMaker.Migrations
                     b.ToTable("Keywords");
                 });
 
-            modelBuilder.Entity("SimpleCardMaker.Models.UnitType", b =>
+            modelBuilder.Entity("SimpleCardMaker.DAL.DBO.UnitType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -101,13 +101,13 @@ namespace SimpleCardMaker.Migrations
                     b.ToTable("UnitTypes");
                 });
 
-            modelBuilder.Entity("SimpleCardMaker.Models.Card", b =>
+            modelBuilder.Entity("SimpleCardMaker.DAL.DBO.Card", b =>
                 {
-                    b.HasOne("SimpleCardMaker.Models.Keyword", "Keyword")
+                    b.HasOne("SimpleCardMaker.DAL.DBO.Keyword", "Keyword")
                         .WithMany("Cards")
                         .HasForeignKey("KeywordId");
 
-                    b.HasOne("SimpleCardMaker.Models.UnitType", "UnitType")
+                    b.HasOne("SimpleCardMaker.DAL.DBO.UnitType", "UnitType")
                         .WithMany("Cards")
                         .HasForeignKey("UnitTypeId");
 
@@ -116,12 +116,12 @@ namespace SimpleCardMaker.Migrations
                     b.Navigation("UnitType");
                 });
 
-            modelBuilder.Entity("SimpleCardMaker.Models.Keyword", b =>
+            modelBuilder.Entity("SimpleCardMaker.DAL.DBO.Keyword", b =>
                 {
                     b.Navigation("Cards");
                 });
 
-            modelBuilder.Entity("SimpleCardMaker.Models.UnitType", b =>
+            modelBuilder.Entity("SimpleCardMaker.DAL.DBO.UnitType", b =>
                 {
                     b.Navigation("Cards");
                 });

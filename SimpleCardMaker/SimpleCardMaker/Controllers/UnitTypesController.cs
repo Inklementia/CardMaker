@@ -6,23 +6,25 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SimpleCardMaker.DAL;
+using SimpleCardMaker.DAL.DBO;
+using SimpleCardMaker.DAL.Repositories;
 using SimpleCardMaker.Models;
 
 namespace SimpleCardMaker.Controllers
 {
     public class UnitTypesController : Controller
     {
-        private readonly CardDbContext _context;
+        private readonly IRepository<UnitType> _unitTypeRepo;
 
-        public UnitTypesController(CardDbContext context)
+        public UnitTypesController(IRepository<UnitType> unitTypeRepo)
         {
-            _context = context;
+            _unitTypeRepo = unitTypeRepo;
         }
 
         // GET: UnitTypes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.UnitTypes.ToListAsync());
+            return View(await _unitTypeRepo.GetAllAsync());
         }
 
         // GET: UnitTypes/Details/5
@@ -33,8 +35,8 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var unitType = await _context.UnitTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var unitType = await _unitTypeRepo.GetByIdAsync(id.Value);
+               
             if (unitType == null)
             {
                 return NotFound();
@@ -58,8 +60,7 @@ namespace SimpleCardMaker.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(unitType);
-                await _context.SaveChangesAsync();
+                await _unitTypeRepo.CreateAsync(unitType);
                 return RedirectToAction(nameof(Index));
             }
             return View(unitType);
@@ -73,7 +74,7 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var unitType = await _context.UnitTypes.FindAsync(id);
+            var unitType = await _unitTypeRepo.GetByIdAsync(id.Value);
             if (unitType == null)
             {
                 return NotFound();
@@ -97,12 +98,11 @@ namespace SimpleCardMaker.Controllers
             {
                 try
                 {
-                    _context.Update(unitType);
-                    await _context.SaveChangesAsync();
+                    await _unitTypeRepo.UpdateAsync(unitType);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!UnitTypeExists(unitType.Id))
+                    if (!_unitTypeRepo.Exists(unitType.Id))
                     {
                         return NotFound();
                     }
@@ -124,8 +124,7 @@ namespace SimpleCardMaker.Controllers
                 return NotFound();
             }
 
-            var unitType = await _context.UnitTypes
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var unitType = await _unitTypeRepo.GetByIdAsync(id.Value);
             if (unitType == null)
             {
                 return NotFound();
@@ -139,15 +138,10 @@ namespace SimpleCardMaker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var unitType = await _context.UnitTypes.FindAsync(id);
-            _context.UnitTypes.Remove(unitType);
-            await _context.SaveChangesAsync();
+            await _unitTypeRepo.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UnitTypeExists(int id)
-        {
-            return _context.UnitTypes.Any(e => e.Id == id);
-        }
+        
     }
 }

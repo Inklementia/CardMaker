@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace SimpleCardMaker.Migrations
+namespace SimpleCardMaker.DAL.Migrations
 {
     public partial class initial : Migration
     {
