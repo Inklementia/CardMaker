@@ -16,14 +16,14 @@ namespace SimpleCardMaker.Controllers
 {
     public class CardsController : Controller
     {
-        private readonly IRepository<Card> _cardRepo;
+        private readonly ICardRepository _cardRepo;
         private readonly IRepository<Keyword> _keywordRepo;
         private readonly IRepository<UnitType> _unitTypeRepo;
 
         private readonly IWebHostEnvironment _hostEnvironment;
 
         public CardsController(
-            IRepository<Card> cardRepo,
+            ICardRepository cardRepo,
             IRepository<Keyword> keywordRepo,
             IRepository<UnitType> unitTypeRepo,
             IWebHostEnvironment hostEnvironment)
@@ -37,7 +37,7 @@ namespace SimpleCardMaker.Controllers
         // GET: Cards
         public async Task<IActionResult> Index()
         {
-            return View(await _cardRepo.GetAllAsync());
+            return View(await _cardRepo.GetAllAsyncWithKeywordsAndUnitTypes());
         }
 
         // GET: Cards/Details/5

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SimpleCardMaker.DAL.DBO
 {
-    public class Card
+    public class Card : IEntity
     {
         [Key]
         public int Id { get; set; }

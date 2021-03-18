@@ -27,9 +27,12 @@ namespace SimpleCardMaker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddScoped<IRepository<Card>, CardRepo>();
-            services.AddScoped<IRepository<Keyword>, KeywordRepo>();
-            services.AddScoped<IRepository<UnitType>, UnitTypeRepo>();
+
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+           //services.AddScoped<IRepository<Keyword>, Repository<Keyword>>();
+           //services.AddScoped<IRepository<UnitType>, Repository<UnitType>>();
+            services.AddTransient<ICardRepository, CardRepository>();
+
             services.AddDbContext<CardDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }

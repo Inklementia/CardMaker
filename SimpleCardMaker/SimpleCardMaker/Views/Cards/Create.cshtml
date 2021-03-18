@@ -44,11 +44,15 @@
             </div>
             <div class="form-group">
                 <label asp-for="KeywordId" class="control-label"></label>
-                <select asp-for="KeywordId" class ="form-control" asp-items="ViewBag.KeywordId"></select>
+                <select asp-for="KeywordId" class ="form-control" asp-items="ViewBag.KeywordId">
+                    <option value="null" selected>None</option>   
+                </select>
             </div>
             <div class="form-group">
                 <label asp-for="UnitTypeId" class="control-label"></label>
-                <select asp-for="UnitTypeId" class ="form-control" asp-items="ViewBag.UnitTypeId"></select>
+                <select asp-for="UnitTypeId" class="form-control" asp-items="ViewBag.UnitTypeId">
+                    <option value="null" selected>None</option>
+                </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

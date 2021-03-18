@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SimpleCardMaker.DAL.DBO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace SimpleCardMaker.DAL.Repositories
 {
-    public interface IRepository<T> where T:class
+    public interface IRepository<TEntity> where TEntity : IEntity
     {
         bool Exists(int id);
-        Task CreateAsync(T entity);
-        Task UpdateAsync(T entity);
+        Task CreateAsync(TEntity entity);
+        Task UpdateAsync(TEntity entity);
         Task DeleteAsync(int id);
-        Task<T> GetByIdAsync(int id);
-        Task<List<T>> GetAllAsync();
+        Task<TEntity> GetByIdAsync(int id);
+        Task<List<TEntity>> GetAllAsync();
     }
 }

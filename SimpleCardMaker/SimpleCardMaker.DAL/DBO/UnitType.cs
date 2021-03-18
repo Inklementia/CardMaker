@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace SimpleCardMaker.DAL.DBO
 {
-    public class UnitType
+    public class UnitType : IEntity
     {
         [Key]
         public int Id { get; set; }
