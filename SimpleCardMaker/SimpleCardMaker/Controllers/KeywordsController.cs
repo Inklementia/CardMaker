@@ -2,17 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SimpleCardMaker.DAL;
 using SimpleCardMaker.DAL.DBO;
 using SimpleCardMaker.DAL.Repositories;
-using SimpleCardMaker.Models;
 
 namespace SimpleCardMaker.Controllers
 {
-    public class KeywordsController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class KeywordsController : ControllerBase
     {
         private readonly IRepository<Keyword> _keywordRepo;
 
@@ -21,79 +22,36 @@ namespace SimpleCardMaker.Controllers
             _keywordRepo = keywordRepo;
         }
 
-        // GET: Keywords
-        public async Task<IActionResult> Index()
+        // GET: api/Keywords
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Keyword>>> GetKeywords()
         {
-            return View(await _keywordRepo.GetAllAsync());
+            return await _keywordRepo.GetAllAsync();
         }
 
-        // GET: Keywords/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Keywords/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Keyword>> GetKeyword(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var keyword = await _keywordRepo.GetByIdAsync(id);
 
-            var keyword = await _keywordRepo.GetByIdAsync(id.Value);
-               
             if (keyword == null)
             {
                 return NotFound();
             }
 
-            return View(keyword);
+            return keyword;
         }
 
-        // GET: Keywords/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Keywords/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description")] Keyword keyword)
-        {
-            if (ModelState.IsValid)
-            {
-                await _keywordRepo.CreateAsync(keyword);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(keyword);
-        }
-
-        // GET: Keywords/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var keyword =  await _keywordRepo.GetByIdAsync(id.Value);
-            if (keyword == null)
-            {
-                return NotFound();
-            }
-            return View(keyword);
-        }
-
-        // POST: Keywords/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Keyword keyword)
+        // PUT: api/Keywords/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutKeyword(int id, Keyword keyword)
         {
             if (id != keyword.Id)
             {
-                return NotFound();
+                return BadRequest();
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -102,7 +60,7 @@ namespace SimpleCardMaker.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_keywordRepo.Exists(keyword.Id))
+                    if (!_keywordRepo.Exists(id))
                     {
                         return NotFound();
                     }
@@ -111,35 +69,37 @@ namespace SimpleCardMaker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(keyword);
+       
+
+            return NoContent();
         }
 
-        // GET: Keywords/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Keywords
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Keyword>> PostKeyword(Keyword keyword)
         {
-            if (id == null)
+            if (ModelState.IsValid)
             {
-                return NotFound();
+                await _keywordRepo.CreateAsync(keyword);
             }
+            return CreatedAtAction("GetKeyword", new { id = keyword.Id }, keyword);
+        }
 
-            var keyword = await _keywordRepo.GetByIdAsync(id.Value);
+        // DELETE: api/Keywords/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteKeyword(int id)
+        {
+            var keyword = await _keywordRepo.GetByIdAsync(id);
             if (keyword == null)
             {
                 return NotFound();
             }
 
-            return View(keyword);
-        }
+            await _keywordRepo.DeleteAsync(keyword);
 
-        // POST: Keywords/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            await _keywordRepo.DeleteAsync(id);
-            return RedirectToAction(nameof(Index));
+            return NoContent();
         }
 
      

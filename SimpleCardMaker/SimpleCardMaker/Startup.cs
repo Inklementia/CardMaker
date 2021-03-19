@@ -26,8 +26,8 @@ namespace SimpleCardMaker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllersWithViews();
-
+           services.AddControllersWithViews();
+     
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
            //services.AddScoped<IRepository<Keyword>, Repository<Keyword>>();
            //services.AddScoped<IRepository<UnitType>, Repository<UnitType>>();
@@ -52,7 +52,7 @@ namespace SimpleCardMaker
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
