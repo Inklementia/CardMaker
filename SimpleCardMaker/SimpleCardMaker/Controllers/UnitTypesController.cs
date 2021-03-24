@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SimpleCardMaker.DAL;
 using SimpleCardMaker.DAL.DBO;
 using SimpleCardMaker.DAL.Repositories;
+using SimpleCardMaker.DAL.UnitOfWork;
 
 namespace SimpleCardMaker.Controllers
 {
@@ -15,25 +16,25 @@ namespace SimpleCardMaker.Controllers
     [ApiController]
     public class UnitTypesController : ControllerBase
     {
-        private readonly IRepository<UnitType> _unitTypeRepo;
+        private IUnitOfWork _unitOfWork;
 
-        public UnitTypesController(IRepository<UnitType> unitTypeRepo)
+        public UnitTypesController(IUnitOfWork unitOfWork)
         {
-            _unitTypeRepo = unitTypeRepo;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/UnitTypes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UnitType>>> GetUnitTypes()
         {
-            return await _unitTypeRepo.GetAllAsync();
+            return await _unitOfWork.UnitTypes.GetAllAsync();
         }
 
         // GET: api/UnitTypes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<UnitType>> GetUnitType(int id)
         {
-            var unitType = await _unitTypeRepo.GetByIdAsync(id);
+            var unitType = await _unitOfWork.UnitTypes.GetByIdAsync(id);
 
             if (unitType == null)
             {
@@ -46,33 +47,34 @@ namespace SimpleCardMaker.Controllers
         // PUT: api/UnitTypes/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutUnitType(int id, UnitType unitType)
+        public IActionResult PutUnitType(int id, UnitType unitType)
         {
             if (id != unitType.Id)
             {
                 return BadRequest();
             }
-
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
+                return BadRequest(ModelState);
+            }
+          
+            try
+            {
+                 _unitOfWork.UnitTypes.Update(unitType);
+                _unitOfWork.Complete();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_unitOfWork.UnitTypes.Exists(id))
                 {
-                    await _unitTypeRepo.UpdateAsync(unitType);
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!_unitTypeRepo.Exists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
             }
-           
-
             return NoContent();
         }
 
@@ -81,10 +83,14 @@ namespace SimpleCardMaker.Controllers
         [HttpPost]
         public async Task<ActionResult<UnitType>> PostUnitType(UnitType unitType)
         {
-            if(ModelState.IsValid){
-                await _unitTypeRepo.CreateAsync(unitType);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
             }
-
+        
+            await _unitOfWork.UnitTypes.CreateAsync(unitType);
+            _unitOfWork.Complete();
+            
             return CreatedAtAction("GetUnitType", new { id = unitType.Id }, unitType);
         }
 
@@ -92,14 +98,14 @@ namespace SimpleCardMaker.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUnitType(int id)
         {
-            var unitType = await _unitTypeRepo.GetByIdAsync(id);
+            var unitType = await _unitOfWork.UnitTypes.GetByIdAsync(id);
             if (unitType == null)
             {
                 return NotFound();
             }
 
-            await _unitTypeRepo.DeleteAsync(unitType);
-
+            _unitOfWork.UnitTypes.Delete(unitType);
+            _unitOfWork.Complete();
             return NoContent();
         }
 

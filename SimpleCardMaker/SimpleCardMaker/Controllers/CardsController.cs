@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using SimpleCardMaker.DAL;
 using SimpleCardMaker.DAL.DBO;
 using SimpleCardMaker.DAL.Repositories;
+using SimpleCardMaker.DAL.UnitOfWork;
 
 namespace SimpleCardMaker.Controllers
 {
@@ -17,36 +18,51 @@ namespace SimpleCardMaker.Controllers
     [ApiController]
     public class CardsController : ControllerBase
     {
-        private readonly ICardRepository _cardRepo;
-        private readonly IRepository<Keyword> _keywordRepo;
-        private readonly IRepository<UnitType> _unitTypeRepo;
+        private IUnitOfWork _unitOfWork;
 
         private readonly IWebHostEnvironment _hostEnvironment;
 
         public CardsController(
-            ICardRepository cardRepo,
-            IRepository<Keyword> keywordRepo,
-            IRepository<UnitType> unitTypeRepo,
+            IUnitOfWork unitOfWork,
             IWebHostEnvironment hostEnvironment)
         {
-            _cardRepo = cardRepo;
-            _keywordRepo = keywordRepo;
-            _unitTypeRepo = unitTypeRepo;
+            _unitOfWork = unitOfWork;
             _hostEnvironment = hostEnvironment;
         }
 
         // GET: api/Cards
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Card>>> GetCards()
+        public async Task<ActionResult<IEnumerable<Card>>> GetCards(int? keywordId, int? unittypeId)
         {
-            return await _cardRepo.GetAllAsyncWithKeywordsAndUnitTypes();
+            var cards = await _unitOfWork.Cards.GetAllAsyncWithKeywordsAndUnitTypes();
+            if (keywordId != null && unittypeId != null)
+            {
+                var filteredCards = cards
+                    .Where(k => k.KeywordId == keywordId.Value)
+                    .Where(u => u.UnitTypeId == unittypeId.Value);
+                return Ok(filteredCards);
+            }
+            else if (keywordId != null)
+            {
+                var filteredCards = cards
+                    .Where(k => k.KeywordId == keywordId.Value);
+                return Ok(filteredCards);
+            }
+            else if(unittypeId != null)
+            {
+                var filteredCards = cards
+                    .Where(u => u.UnitTypeId == unittypeId.Value);
+                return Ok(filteredCards);
+            }
+            return cards;
         }
+
 
         // GET: api/Cards/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Card>> GetCard(int id)
         {
-            var card = await _cardRepo.GetByIdAsync(id);
+            var card = await _unitOfWork.Cards.GetByIdAsync(id);
 
             if (card == null)
             {
@@ -59,33 +75,37 @@ namespace SimpleCardMaker.Controllers
         // PUT: api/Cards/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutCard(int id, Card card)
+        public IActionResult PutCard(int id, Card card)
         {
             if (id != card.Id)
             {
                 return BadRequest();
             }
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                try
-                {
-                    SaveImage(card);
+                return BadRequest(ModelState);
+            }
+       
+            try
+            {
+                SaveImage(card);
 
-                    await _cardRepo.UpdateAsync(card);
-                }
-                catch (DbUpdateConcurrencyException)
+                _unitOfWork.Cards.Update(card);
+                _unitOfWork.Complete();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_unitOfWork.Cards.Exists(id))
                 {
-                    if (!_cardRepo.Exists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
                 }
             }
-            return NoContent();
+
         }
 
         // POST: api/Cards
@@ -93,12 +113,16 @@ namespace SimpleCardMaker.Controllers
         [HttpPost]
         public async Task<ActionResult<Card>> PostCard(Card card)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                SaveImage(card);
-
-                await _cardRepo.CreateAsync(card);
+                return BadRequest(ModelState);
             }
+         
+            SaveImage(card);
+
+            await _unitOfWork.Cards.CreateAsync(card);
+            _unitOfWork.Complete();
+
             return CreatedAtAction("GetCard", new { id = card.Id }, card);
         }
 
@@ -106,13 +130,14 @@ namespace SimpleCardMaker.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCard(int id)
         {
-            var card = await _cardRepo.GetByIdAsync(id);
+            var card = await _unitOfWork.Cards.GetByIdAsync(id);
             if (card == null)
             {
                 return NotFound();
             }
 
-            await _cardRepo.DeleteAsync(card);
+            _unitOfWork.Cards.Delete(card);
+            _unitOfWork.Complete();
 
             return NoContent();
         }
@@ -126,7 +151,7 @@ namespace SimpleCardMaker.Controllers
 
 
             card.ImageFileName = fileName = fileName + DateTime.Now.ToString("yymmssff") + extension;
-            string path = Path.Combine(wwwRootPath + "/images/", fileName);
+            string path = Path.Combine(wwwRootPath + "/uploads/", fileName);
 
             using (var fileStream = new FileStream(path, FileMode.Create))
             {

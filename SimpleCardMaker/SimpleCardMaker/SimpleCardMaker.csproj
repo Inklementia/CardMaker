@@ -17,11 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\" />
+    <ProjectReference Include="..\SimpleCardMaker.DAL\SimpleCardMaker.DAL.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SimpleCardMaker.DAL\SimpleCardMaker.DAL.csproj" />
+    <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 
 </Project>

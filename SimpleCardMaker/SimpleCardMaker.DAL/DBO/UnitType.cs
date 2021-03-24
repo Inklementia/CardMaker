@@ -17,7 +17,7 @@ namespace SimpleCardMaker.DAL.DBO
         [DisplayName("Unit Type Name")]
         public string Name { get; set; }
 
-        [Required]
+
         [DisplayName("Unit Type Description")]
 
         public string Description { get; set; }

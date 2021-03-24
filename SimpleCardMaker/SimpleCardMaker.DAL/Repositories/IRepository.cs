@@ -11,8 +11,8 @@ namespace SimpleCardMaker.DAL.Repositories
     {
         bool Exists(int id);
         Task CreateAsync(TEntity entity);
-        Task UpdateAsync(TEntity entity);
-        Task DeleteAsync(TEntity entity);
+        void Update(TEntity entity);
+        void Delete(TEntity entity);
         Task<TEntity> GetByIdAsync(int id);
         Task<List<TEntity>> GetAllAsync();
     }

@@ -12,8 +12,8 @@ namespace SimpleCardMaker.DAL
         {
             context.Database.EnsureCreated();
 
-            // Look for any students.
-            if (context.Keywords.Any())
+            // Look for any keywords or unitTypes.
+            if (context.Keywords.Any() && context.UnitTypes.Any())
             {
                 return;   // DB has been seeded
             }
@@ -43,6 +43,17 @@ namespace SimpleCardMaker.DAL
             };
 
             context.UnitTypes.AddRange(unitTypes);
+            context.SaveChanges();
+
+            var cards = new Card[]
+           {
+
+                new Card{Name="Example Card",Description="Just an example of a card", Attack = 3, Defence =3, ManaCost=2, ImageFileName="uploads/test.png", KeywordId=1, UnitTypeId=1},
+                new Card{Name="Example Card 2",Description="Just an example of a card 2", Attack = 5, Defence =3, ManaCost=2, ImageFileName="uploads/test.png", KeywordId=2, UnitTypeId=1},
+
+           };
+
+            context.Cards.AddRange(cards);
             context.SaveChanges();
         }
     }

@@ -19,17 +19,17 @@ namespace SimpleCardMaker.DAL.Repositories
         }
         public async Task CreateAsync(TEntity entity)
         {
-            _context.Set<TEntity>().Add(entity);
-            await _context.SaveChangesAsync();
+            await _context.Set<TEntity>().AddAsync(entity);
+             // _context.SaveChangesAsync();
         }
-        public async Task UpdateAsync(TEntity entity)
+        public void Update(TEntity entity)
         {
             _context.Entry(entity).State = EntityState.Modified;
             _context.Set<TEntity>().Update(entity);
-            await _context.SaveChangesAsync();
+           // await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(TEntity entity)
+        public void Delete(TEntity entity)
         {
             /* for mvc
             var entityToDelete = _context.Set<TEntity>().FirstOrDefault(e => e.Id == id);
@@ -41,13 +41,14 @@ namespace SimpleCardMaker.DAL.Repositories
             */
 
             // for api
+
             _context.Set<TEntity>().Remove(entity);
-            await _context.SaveChangesAsync(); 
+            // _context.SaveChangesAsync(); 
         }
 
         public async Task<List<TEntity>> GetAllAsync()
         {
-            return await _context.Set<TEntity>().ToListAsync();
+            return await _context.Set<TEntity>().OrderBy(e => e.Name).ToListAsync();
         }
 
         public async Task<TEntity> GetByIdAsync(int id)

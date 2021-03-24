@@ -10,7 +10,7 @@ using SimpleCardMaker.DAL;
 namespace SimpleCardMaker.DAL.Migrations
 {
     [DbContext(typeof(CardDbContext))]
-    [Migration("20210311175519_initial")]
+    [Migration("20210321112353_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,7 +35,6 @@ namespace SimpleCardMaker.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageFileName")
@@ -71,7 +70,6 @@ namespace SimpleCardMaker.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -91,7 +89,6 @@ namespace SimpleCardMaker.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")

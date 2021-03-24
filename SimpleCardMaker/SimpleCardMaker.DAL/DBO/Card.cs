@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace SimpleCardMaker.DAL.DBO
@@ -18,7 +19,6 @@ namespace SimpleCardMaker.DAL.DBO
         [DisplayName("Name")]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Please, Set {0} for your card")]
         [DisplayName("Description")]
         public string Description { get; set; }
 
@@ -35,6 +35,7 @@ namespace SimpleCardMaker.DAL.DBO
         [Range(0, int.MaxValue, ErrorMessage = "You do not want to have negative value here")]
         public int Defence { get; set; } = 0;
 
+       
         public string ImageFileName { get; set; }
 
         [Required(ErrorMessage = "Please, Set {0} for your card")]

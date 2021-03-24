@@ -2,3 +2,125 @@
     ViewData["Title"] = "Home Page";
 }
 
+<div ng-app="SimpleCardMaker">
+    <div ng-view></div>
+</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+<script type="text/javascript">
+
+    angular
+        .module("SimpleCardMaker", ["ngRoute"])
+        .config(function ($routeProvider) {
+            $routeProvider
+                .when("/",
+                    {
+                        templateUrl: "pages/index.html",
+                        controller: "IndexController"
+                    })
+                .when("/cards",
+                    {
+                        templateUrl: "pages/cards.html",
+                        controller: "CardsController"
+                    })
+                .when("/keywords",
+                    {
+                        templateUrl: "pages/keywords.html",
+                        controller: "KeywordsController"
+                    })
+                .when("/keywords/add",
+                    {
+                        templateUrl: "pages/add-edit-keyword.html",
+                        controller: "AddKeywordController"
+                    })
+                .when("/unittypes",
+                    {
+                        templateUrl: "pages/unittypes.html",
+                        controller: "UnitTypesController"
+                    })
+                .when("/404",
+                    {
+                        templateUrl: "pages/404.html",
+                        controller: "NowFoundController"
+                    })
+                .otherwise(
+                    {
+                        redirectTo: "/404"
+                    }
+                );
+        })
+        .controller("IndexController", ["$scope", "$http", function ($scope, $http) {
+            $scope.message = "Welcome!";
+        }])
+        .controller("CardsController", ["$scope", "$http", function ($scope, $http) {
+            $scope.cards = [];
+            $scope.keywords = [];
+            $scope.unittypes = [];
+
+            $scope.selectedKeyword = null;
+            $scope.selectedUnitType = null;
+
+            /* getting unitypes and keywords */
+            $http.get('@Url.Action("GetKeywords", "Keywords")')
+                .then(function (response) {
+                    $scope.keywords = response.data;
+                });
+            $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
+                .then(function (response) {
+                    $scope.unittypes = response.data;
+                });
+            /* getting unitypes and keywords end*/
+
+            $scope.GetCards = function () {
+                var url = '@Url.Action("GetCards", "Cards")';
+                if ($scope.selectedKeyword && $scope.selectedUnitType) {
+                    url += '?keywordId=' + $scope.selectedKeyword.id + '&unitTypeId=' + $scope.selectedUnitType.id;
+                }
+                else if ($scope.selectedKeyword) {
+                    url += '?keywordId=' + $scope.selectedKeyword.id;
+                }
+                else if ($scope.selectedUnitType) {
+                    url += '?unitTypeId=' + $scope.selectedUnitType.id;
+                }
+                console.log(url);
+                $http.get(url)
+                    .then(function (response) {
+                        $scope.cards = response.data;
+                        console.log(response.data);
+                    });
+            };
+            $scope.GetCards(null);
+        }])
+        .controller("KeywordsController", ["$scope", "$http", function ($scope, $http) {
+            $scope.keywords = [];
+            $http.get('@Url.Action("GetKeywords", "Keywords")')
+                .then(function (response) {
+                    $scope.keywords = response.data;
+                });
+        }])
+        .controller("AddKeywordController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
+            $scope.keyword = {
+                id: 0,
+                name: "",
+                description: ""
+            };
+
+            $scope.SaveKeyword = function () {
+                $http.post('@Url.Action("PostKeyword", "Keywords")', $scope.keyword)
+                    .then(function (response) {
+                        $location.path('/keywords');
+                    })
+            },function (error) {
+                    $scope.message = error.data.title;
+                };
+      
+        }])
+        .controller("UnitTypesController", ["$scope", "$http", function ($scope, $http) {
+         $scope.unittypes = [];
+            $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
+                .then(function (response) {
+                    $scope.unittypes = response.data;
+                });
+        }]);
+</script>

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using SimpleCardMaker.DAL;
 using SimpleCardMaker.DAL.DBO;
 using SimpleCardMaker.DAL.Repositories;
+using SimpleCardMaker.DAL.UnitOfWork;
 
 namespace SimpleCardMaker.Controllers
 {
@@ -15,25 +16,25 @@ namespace SimpleCardMaker.Controllers
     [ApiController]
     public class KeywordsController : ControllerBase
     {
-        private readonly IRepository<Keyword> _keywordRepo;
+        private IUnitOfWork _unitOfWork;
 
-        public KeywordsController(IRepository<Keyword> keywordRepo)
+        public KeywordsController(IUnitOfWork unitOfWork)
         {
-            _keywordRepo = keywordRepo;
+            _unitOfWork = unitOfWork;
         }
 
         // GET: api/Keywords
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Keyword>>> GetKeywords()
         {
-            return await _keywordRepo.GetAllAsync();
+            return await _unitOfWork.Keywords.GetAllAsync();
         }
 
         // GET: api/Keywords/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Keyword>> GetKeyword(int id)
         {
-            var keyword = await _keywordRepo.GetByIdAsync(id);
+            var keyword = await _unitOfWork.Keywords.GetByIdAsync(id);
 
             if (keyword == null)
             {
@@ -46,21 +47,26 @@ namespace SimpleCardMaker.Controllers
         // PUT: api/Keywords/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutKeyword(int id, Keyword keyword)
+        public IActionResult PutKeyword(int id, Keyword keyword)
         {
+
             if (id != keyword.Id)
             {
                 return BadRequest();
             }
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
+                return BadRequest(ModelState);
+            }
+        
                 try
                 {
-                    await _keywordRepo.UpdateAsync(keyword);
-                }
+                    _unitOfWork.Keywords.Update(keyword);
+                    _unitOfWork.Complete();
+            }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!_keywordRepo.Exists(id))
+                    if (!_unitOfWork.Keywords.Exists(id))
                     {
                         return NotFound();
                     }
@@ -69,7 +75,7 @@ namespace SimpleCardMaker.Controllers
                         throw;
                     }
                 }
-            }
+            
        
 
             return NoContent();
@@ -80,10 +86,13 @@ namespace SimpleCardMaker.Controllers
         [HttpPost]
         public async Task<ActionResult<Keyword>> PostKeyword(Keyword keyword)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _keywordRepo.CreateAsync(keyword);
+                return BadRequest(ModelState);
             }
+            await _unitOfWork.Keywords.CreateAsync(keyword);
+            _unitOfWork.Complete();
+
             return CreatedAtAction("GetKeyword", new { id = keyword.Id }, keyword);
         }
 
@@ -91,14 +100,14 @@ namespace SimpleCardMaker.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteKeyword(int id)
         {
-            var keyword = await _keywordRepo.GetByIdAsync(id);
+            var keyword = await _unitOfWork.Keywords.GetByIdAsync(id);
             if (keyword == null)
             {
                 return NotFound();
             }
 
-            await _keywordRepo.DeleteAsync(keyword);
-
+            _unitOfWork.Keywords.Delete(keyword);
+            _unitOfWork.Complete();
             return NoContent();
         }
 

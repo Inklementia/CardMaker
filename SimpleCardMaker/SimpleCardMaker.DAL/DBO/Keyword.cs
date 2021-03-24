@@ -17,7 +17,7 @@ namespace SimpleCardMaker.DAL.DBO
         [DisplayName("Keyword Name")]
         public string Name { get; set; }
 
-        [Required]
+  
         [DisplayName("Keyword Description")]
 
         public string Description { get; set; }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Hosting;
 using SimpleCardMaker.DAL;
 using SimpleCardMaker.DAL.DBO;
 using SimpleCardMaker.DAL.Repositories;
+using SimpleCardMaker.DAL.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,6 +33,7 @@ namespace SimpleCardMaker
            //services.AddScoped<IRepository<Keyword>, Repository<Keyword>>();
            //services.AddScoped<IRepository<UnitType>, Repository<UnitType>>();
             services.AddTransient<ICardRepository, CardRepository>();
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
 
             services.AddDbContext<CardDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
