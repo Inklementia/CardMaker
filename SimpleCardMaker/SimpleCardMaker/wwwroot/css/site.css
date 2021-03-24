@@ -19,6 +19,14 @@ a {
   color: #0366d6;
 }
 
+input.ng-touched.ng-invalid, .ng-submitted input.ng-invalid {
+    border-color: #dc3545;
+}
+
+input.ng-touched.ng-valid, .ng-submitted input.ng-valid {
+    border-color: green;
+}
+
 .btn-primary {
   color: #fff;
   background-color: #1b6ec2;

@@ -75,7 +75,7 @@ namespace SimpleCardMaker.Controllers
                     throw;
                 }
             }
-            return NoContent();
+  
         }
 
         // POST: api/UnitTypes

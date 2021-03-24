@@ -1,57 +1,73 @@
-﻿<div class="row">
+﻿<form name="cardform" class="" novalidate enctype="multipart/form-data">
     <div class="form-group">
-        <label for="Name"></label>
-        <input type="text" ng-model="card.name" id="Name" class="form-control" placeholder="Card name" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+        <label for="name">Name</label>
+        <input type="text" ng-model="card.name" id="name" name="name" class="form-control" placeholder="Card name" ng-required="true"/>
+        <div ng-show="cardform.$submitted || cardform.name.$touched">
+            <span ng-show="cardform.name.$error.required" class="text-danger">Please fill the field</span>
+        </div>
     </div>
     <div class="form-group">
-        <label for="Description"></label>
-        <textarea name="Description" rows="3" id="Description" placeholder="Card description" class="form-control"></textarea>
-        <span asp-validation-for="Description" class="text-danger"></span>
+        <label for="description">Description</label>
+        <textarea name="description" ng-model="card.description" rows="3" id="description" placeholder="Card description" class="form-control"></textarea>
+       
     </div>
     <div class="form-row">
         <div class="form-group col-4">
-            <label for="Attack"></label>
-            <input type="number" name="Attack" id="Attack" />
-            <span asp-validation-for="Attack" class="text-danger"></span>
+            <label for="attack">Attack</label>
+            <input type="number" ng-model="card.attack" name="attack" id="attack" ng-required="true" min="0"/>
+            <div ng-show="cardform.$submitted || cardform.attack.$touched">
+                <span ng-show="cardform.attack.$error.required" class="text-danger">Please fill the field</span>
+            </div>
 
         </div>
         <div class="form-group col-4">
-            <label for="Defence"></label>
-            <input type="number" name="Defence" id="Defence" />
-            <span asp-validation-for="Defence" class="text-danger"></span>
+            <label for="defence">Defence</label>
+            <input type="number" ng-model="card.defence" name="defence" id="defence" ng-required="true" min="0" />
+            <div ng-show="cardform.$submitted || cardform.defence.$touched">
+                <span ng-show="cardform.defence.$error.required" class="text-danger">Please fill the field</span>
+             
+            </div>
         </div>
         <div class="form-group col-4">
-            <label for="ManaCost"></label>
-            <input type="number" name="ManaCost" id="ManaCost" />
-            <span asp-validation-for="ManaCost" class="text-danger"></span>
+            <label for="manaCost">Mana Cost</label>
+            <input type="number" ng-model="card.manaCost" name="attack" id="manaCost" ng-required="true" min="0" />
+            <div ng-show="cardform.$submitted || cardform.manaCost.$touched">
+                <span ng-show="cardform.manaCost.$error.required" class="text-danger">Please fill the field</span>
+            </div>
         </div>
 
     </div>
     <div class="form-group">
-        <label for="ImageFile"></label>
-        <input type="file" accept="image/*" name="ImageFile" id="ImageFile" class="form-control" />
-        <span asp-validation-for="ImageFile" class="text-danger"></span>
+        <label for="imageFile">Card Image</label>
+        <input type="file" accept="image/*" ng-model="card.imageFile" name="imageFile" id="imageFile" class="form-control"  />
+     
+            <span class="text-warning">If you leave this field empty, default image will be set</span>
+        
     </div>
     <div class="form-row">
         <div class="form-group col-6">
-            <label for="Keyword"></label>
-            <select name="KeywordId" id="Keyword" class="form-control" >
-                <option value="" selected>None</option>
+            <label for="keyword"></label>
+            <select name="keywordId" id="keyword" class="form-control" ng-model="card.keywordId">
+                <option value="null" selected>None</option>
+                <option ng:repeat="keyword in card.Keywords" value="{{keyword.Id}}">
+                    {{keyword.name}}
+                </option>
             </select>
-            <span asp-validation-for="Defence" class="text-danger"></span>
+          
         </div>
         <div class="form-group col-6">
-            <label for="UnitType"></label>
-            <select id="UnitType" name="UnitTypeId" class="form-control" >
-                <option value="" selected>None</option>
+            <label for="unitType"></label>
+            <select id="unitType" name="unitTypeId" class="form-control" ng-model="card.unitTypeId">
+                <option value="null" selected>None</option>
+                <option ng:repeat="unitType in card.UnitTypes" value="{{unitType.Id}}">
+                    {{unitType.name}}
+                </option>
             </select>
-            <span asp-validation-for="UnitType" class="text-danger"></span>
-
+           
         </div>
 
     </div>
     <div class="form-group">
-        <input type="submit" value="Create" class="btn btn-default" />
+        <input type="submit" value="Create" class="btn btn-primary" ng-click="SaveCard()" />
     </div>
-</div>
+    </form>

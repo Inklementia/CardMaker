@@ -146,17 +146,25 @@ namespace SimpleCardMaker.Controllers
         {
             // save image to wwwroot/images
             string wwwRootPath = _hostEnvironment.WebRootPath;
-            string extension = Path.GetExtension(card.ImageFile.FileName);
-            string fileName = Path.GetFileNameWithoutExtension(card.ImageFile.FileName);
+            string extension;
+            string fileName;
+            string path;
 
-
-            card.ImageFileName = fileName = fileName + DateTime.Now.ToString("yymmssff") + extension;
-            string path = Path.Combine(wwwRootPath + "/uploads/", fileName);
-
-            using (var fileStream = new FileStream(path, FileMode.Create))
+            if (card.ImageFile != null)
             {
-                await card.ImageFile.CopyToAsync(fileStream);
+                extension = Path.GetExtension(card.ImageFile.FileName);
+                fileName = Path.GetFileNameWithoutExtension(card.ImageFile.FileName);
+                card.ImageFileName = fileName = fileName + DateTime.Now.ToString("yymmssff") + extension;
+                path = Path.Combine(wwwRootPath + "/uploads/", fileName);
             }
+            else
+            {
+                path = Path.Combine(wwwRootPath + "/uploads/", "test.png");
+            }
+           
+            using (var fileStream = new FileStream(path, FileMode.Create))
+            await card.ImageFile.CopyToAsync(fileStream);
+            
         }
     }
 }

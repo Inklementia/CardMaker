@@ -1,7 +1,7 @@
 ﻿<form name="keywordform" class="row" novalidate>
     <div class="form-group col-12">
         <label for="Name">Keyword Name</label>
-        <input type="text" ng-model="keyword.name" name="name" id="Name" class="form-control" placeholder="Keyword name" required />
+        <input type="text" ng-model="keyword.name" name="name" id="Name" class="form-control" placeholder="Keyword name" ng-required="true"  />
         <div ng-show="keywordform.$submitted || keywordform.name.$touched">
             <span ng-show="keywordform.name.$error.required" class="text-danger">Please fill the field</span>
         </div>

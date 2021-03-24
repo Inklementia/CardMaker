@@ -24,6 +24,11 @@
                         templateUrl: "pages/cards.html",
                         controller: "CardsController"
                     })
+                .when("/cards/add",
+                    {
+                        templateUrl: "pages/add-edit-card.html",
+                        controller: "AddCardController"
+                    })
                 .when("/keywords",
                     {
                         templateUrl: "pages/keywords.html",
@@ -92,6 +97,27 @@
             };
             $scope.GetCards(null);
         }])
+        .controller("AddCardController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
+            $scope.card = {
+                id: 0,
+                name: "",
+                description: "no description",
+                attack: 0,
+                defence: 0,
+                manaCost: 0,
+                imageFile: "",
+                keywordId: null,
+                unitTypeId: null
+            };
+
+            $scope.SaveCard = function () {
+                $http.post('@Url.Action("PostCard", "Cards")', $scope.card)
+                    .then(function (response) {
+                        $location.path('/cards');
+                    })
+            }
+
+        }])
         .controller("KeywordsController", ["$scope", "$http", function ($scope, $http) {
             $scope.keywords = [];
             $http.get('@Url.Action("GetKeywords", "Keywords")')
@@ -103,7 +129,7 @@
             $scope.keyword = {
                 id: 0,
                 name: "",
-                description: ""
+                description: "no description"
             };
 
             $scope.SaveKeyword = function () {
@@ -111,10 +137,8 @@
                     .then(function (response) {
                         $location.path('/keywords');
                     })
-            },function (error) {
-                    $scope.message = error.data.title;
-                };
-      
+            }
+
         }])
         .controller("UnitTypesController", ["$scope", "$http", function ($scope, $http) {
          $scope.unittypes = [];

@@ -48,7 +48,7 @@ namespace SimpleCardMaker.DAL.Repositories
 
         public async Task<List<TEntity>> GetAllAsync()
         {
-            return await _context.Set<TEntity>().OrderBy(e => e.Name).ToListAsync();
+            return await _context.Set<TEntity>().OrderByDescending(e => e.Id).ToListAsync();
         }
 
         public async Task<TEntity> GetByIdAsync(int id)

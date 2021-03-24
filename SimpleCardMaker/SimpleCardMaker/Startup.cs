@@ -28,6 +28,7 @@ namespace SimpleCardMaker
         public void ConfigureServices(IServiceCollection services)
         {
            services.AddControllersWithViews();
+          // services.AddNewtonsoftJson();
      
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
            //services.AddScoped<IRepository<Keyword>, Repository<Keyword>>();
