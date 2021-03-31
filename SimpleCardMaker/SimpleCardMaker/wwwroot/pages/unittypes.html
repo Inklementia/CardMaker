@@ -1,4 +1,8 @@
-﻿<table class="table">
+﻿<div class="d-flex justify-content-between align-items-center">
+    <h1>Unit Types</h1>
+    <a href="#!/unittypes/add" class="btn btn-dark">Add unit type</a>
+</div>
+<table class="table">
     <thead>
         <tr>
             <th>ID</th>
@@ -11,7 +15,7 @@
         <tr ng-repeat="unittype in unittypes">
             <td>{{unittype.id}}</td>
             <td>{{unittype.name}}</td>
-            <td>{{unittype.description}}</td>
+            <td>{{unittype.description != "" ? unittype.description : "-"}}</td>
 
         </tr>
 

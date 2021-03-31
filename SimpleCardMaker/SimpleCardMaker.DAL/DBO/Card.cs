@@ -36,13 +36,12 @@ namespace SimpleCardMaker.DAL.DBO
         public int Defence { get; set; } = 0;
 
        
-        public string ImageFileName { get; set; }
+        public string ImageFileName { get; set; } = "uploads/default.png";
 
-        [Required(ErrorMessage = "Please, Set {0} for your card")]
-        [NotMapped]
-        [DisplayName("Image")]
-
-        public IFormFile ImageFile { get; set; }
+       // [Required(ErrorMessage = "Please, Set {0} for your card")]
+       // [NotMapped]
+       // [DisplayName("Image")]
+       // public IFormFile ImageFile { get; set; }
 
         [DisplayName("Keyword")]
         public int? KeywordId { get; set; }

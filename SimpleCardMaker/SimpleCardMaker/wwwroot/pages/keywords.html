@@ -14,7 +14,7 @@
         <tr ng-repeat="keyword in keywords">
             <td>{{keyword.id}}</td>
             <td>{{keyword.name}}</td>
-            <td>{{keyword.description}}</td>
+            <td>{{keyword.description != "" ? keyword.description : "-"}}</td>
 
         </tr>
 

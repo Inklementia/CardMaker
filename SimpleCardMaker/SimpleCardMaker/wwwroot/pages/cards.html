@@ -27,20 +27,26 @@
             <th>Image</th>
             <th>Keyword</th>
             <th>Unit Type</th>
+            <th>Do stuff</th>
         </tr>
     </thead>
     <tbody>
         <tr ng-repeat="card in cards">
             <td>{{card.id}}</td>
             <td>{{card.name}}</td>
-            <td>{{card.description}}</td>
+            <td>{{card.description != "" ? card.description : "-"}}</td>
             <td>{{card.attack}}</td>
             <td>{{card.defence}}</td>
             <td>{{card.manaCost}}</td>
             <td><img src="{{ card.imageFileName }}" alt="Alternate Text" class="img-fluid" style="max-width:200px" /></td>
-            <td>{{ card.keyword.name}}</td>
-            <td>{{ card.unitType.name}}</td>
-        </tr>
+            <td>{{card.keywordId ? card.keywordId : "-"}}</td>
+            <td>{{card.unitTypeId ? card.unitTypeId : "-"}}</td>
+            <td>
+                <a href="#!/cards/edit/{{card.id}}" class="btn btn-warning"><i class="fa fa-pen"></i></a>
+                <a href="#" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>
+
+            </td>
+</tr>
         
     </tbody>
 </table>

@@ -29,6 +29,11 @@
                         templateUrl: "pages/add-edit-card.html",
                         controller: "AddCardController"
                     })
+                .when("/cards/edit/:cardId",
+                    {
+                        templateUrl: "pages/add-edit-card.html",
+                        controller: "EditCardController"
+                    })
                 .when("/keywords",
                     {
                         templateUrl: "pages/keywords.html",
@@ -43,6 +48,11 @@
                     {
                         templateUrl: "pages/unittypes.html",
                         controller: "UnitTypesController"
+                    })
+                .when("/unittypes/add",
+                    {
+                        templateUrl: "pages/add-edit-unittype.html",
+                        controller: "AddUnitTypeController"
                     })
                 .when("/404",
                     {
@@ -101,14 +111,24 @@
             $scope.card = {
                 id: 0,
                 name: "",
-                description: "no description",
+                description: "",
                 attack: 0,
                 defence: 0,
                 manaCost: 0,
-                imageFile: "",
+                imageFileName: "uploads/default.png",
                 keywordId: null,
                 unitTypeId: null
             };
+              $scope.keywords = [];
+                $http.get('@Url.Action("GetKeywords", "Keywords")')
+                    .then(function (response) {
+                        $scope.keywords = response.data;
+                    });
+            $scope.unitTypes = [];
+            $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
+                .then(function (response) {
+                    $scope.unitTypes = response.data;
+                });
 
             $scope.SaveCard = function () {
                 $http.post('@Url.Action("PostCard", "Cards")', $scope.card)
@@ -116,7 +136,42 @@
                         $location.path('/cards');
                     })
             }
-
+        }])
+        .controller("EditCardController", ["$scope", "$http", '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+            $scope.card = {
+                id: 0,
+                name: "",
+                description: "",
+                attack: 0,
+                defence: 0,
+                manaCost: 0,
+                imageFileName: "uploads/default.png",
+                keywordId: null,
+                unitTypeId: null
+            };
+              $scope.keywords = [];
+                $http.get('@Url.Action("GetKeywords", "Keywords")')
+                    .then(function (response) {
+                        $scope.keywords = response.data;
+                    });
+            $scope.unitTypes = [];
+            $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
+                .then(function (response) {
+                    $scope.unitTypes = response.data;
+                });
+            $scope.GetCards = function () {
+                var url = '@Url.Action("GetCards", "Cards")/' + $routeParams.cardId;
+                $http.get(url)
+                    .then(function (response) {
+                        $scope.card = response.data;
+                    });
+            };
+            $scope.SaveCard = function () {
+                $http.post('@Url.Action("PutCard", "Cards")', $scope.card)
+                    .then(function (response) {
+                        $location.path('/cards');
+                    })
+            }
         }])
         .controller("KeywordsController", ["$scope", "$http", function ($scope, $http) {
             $scope.keywords = [];
@@ -129,7 +184,7 @@
             $scope.keyword = {
                 id: 0,
                 name: "",
-                description: "no description"
+                description: ""
             };
 
             $scope.SaveKeyword = function () {
@@ -146,5 +201,20 @@
                 .then(function (response) {
                     $scope.unittypes = response.data;
                 });
+        }])
+        .controller("AddUnitTypeController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
+            $scope.unittype = {
+                id: 0,
+                name: "",
+                description: ""
+            };
+
+            $scope.SaveUnitType = function () {
+                $http.post('@Url.Action("PostUnitType", "UnitTypes")', $scope.unittype)
+                    .then(function (response) {
+                        $location.path('/unittypes');
+                    })
+            }
+
         }]);
 </script>

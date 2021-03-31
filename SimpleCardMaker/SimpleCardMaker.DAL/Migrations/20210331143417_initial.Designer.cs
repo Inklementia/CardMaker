@@ -10,7 +10,7 @@ using SimpleCardMaker.DAL;
 namespace SimpleCardMaker.DAL.Migrations
 {
     [DbContext(typeof(CardDbContext))]
-    [Migration("20210321112353_initial")]
+    [Migration("20210331143417_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

@@ -88,8 +88,6 @@ namespace SimpleCardMaker.Controllers
        
             try
             {
-                SaveImage(card);
-
                 _unitOfWork.Cards.Update(card);
                 _unitOfWork.Complete();
                 return Ok();
@@ -117,8 +115,6 @@ namespace SimpleCardMaker.Controllers
             {
                 return BadRequest(ModelState);
             }
-         
-            SaveImage(card);
 
             await _unitOfWork.Cards.CreateAsync(card);
             _unitOfWork.Complete();
@@ -142,29 +138,6 @@ namespace SimpleCardMaker.Controllers
             return NoContent();
         }
 
-        public async void SaveImage(Card card)
-        {
-            // save image to wwwroot/images
-            string wwwRootPath = _hostEnvironment.WebRootPath;
-            string extension;
-            string fileName;
-            string path;
-
-            if (card.ImageFile != null)
-            {
-                extension = Path.GetExtension(card.ImageFile.FileName);
-                fileName = Path.GetFileNameWithoutExtension(card.ImageFile.FileName);
-                card.ImageFileName = fileName = fileName + DateTime.Now.ToString("yymmssff") + extension;
-                path = Path.Combine(wwwRootPath + "/uploads/", fileName);
-            }
-            else
-            {
-                path = Path.Combine(wwwRootPath + "/uploads/", "test.png");
-            }
-           
-            using (var fileStream = new FileStream(path, FileMode.Create))
-            await card.ImageFile.CopyToAsync(fileStream);
-            
-        }
+   
     }
 }
