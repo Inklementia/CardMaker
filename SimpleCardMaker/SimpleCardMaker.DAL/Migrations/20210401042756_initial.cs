@@ -10,10 +10,10 @@ namespace SimpleCardMaker.DAL.Migrations
                 name: "Keywords",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -24,10 +24,10 @@ namespace SimpleCardMaker.DAL.Migrations
                 name: "UnitTypes",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -38,16 +38,16 @@ namespace SimpleCardMaker.DAL.Migrations
                 name: "Cards",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ManaCost = table.Column<int>(type: "int", nullable: false),
-                    Attack = table.Column<int>(type: "int", nullable: false),
-                    Defence = table.Column<int>(type: "int", nullable: false),
-                    ImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    KeywordId = table.Column<int>(type: "int", nullable: true),
-                    UnitTypeId = table.Column<int>(type: "int", nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: true),
+                    ManaCost = table.Column<int>(nullable: false),
+                    Attack = table.Column<int>(nullable: false),
+                    Defence = table.Column<int>(nullable: false),
+                    ImageFileName = table.Column<string>(nullable: true),
+                    KeywordId = table.Column<int>(nullable: true),
+                    UnitTypeId = table.Column<int>(nullable: true)
                 },
                 constraints: table =>
                 {

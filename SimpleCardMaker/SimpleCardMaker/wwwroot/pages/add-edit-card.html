@@ -41,22 +41,31 @@
     <div class="form-row">
         <div class="form-group col-6">
             <label for="keyword">Keyword</label>
-            <select name="keywordId" id="keyword" class="form-control" ng-model="card.keywordId">
-                <option value="" selected>None</option>
-                <option ng-repeat="keyword in keywords" value="{{keyword.id}}">{{keyword.name}}</option>
-            </select>
-          
+
+            <!--<select name="keywordId" id="keyword" class="form-control" ng-model="card.keywordId">
+        <option value="">None</option>
+        <option ng-repeat="keyword in keywords" value="{{keyword.id}}" ng-selected="card.keywordId == keyword.id">{{keyword.name}}</option>
+    </select>-->
+        <select ng-options="keyword.id as keyword.name for keyword in keywords" ng-model="card.keywordId" class="form-control">
+            <option value="">None</option>
+        </select>
         </div>
+        
         <div class="form-group col-6">
             <label for="unitType">Unit Type</label>
-            <select id="unitType" name="unitTypeId" class="form-control" ng-model="card.unitTypeId">
-                <option value="" selected>None</option>
-                <option ng-repeat="unitType in unitTypes" value="{{unitType.id}}">{{unitType.name}}</option>
+            <!--
+        <select id="unitType" name="unitTypeId" class="form-control" ng-model="card.unitTypeId">
+            <option value="">None</option>
+            <option ng-repeat="unitType in unitTypes" value="{{unitType.id}}"  ng-selected="card.unitTypeId == unitType.id">{{unitType.name}}</option>
+        </select>
+        -->
+            <select ng-options="unitType.id as unitType.name for unitType in unitTypes" ng-model="card.unitTypeId" class="form-control">
+                <option value="">None</option>
             </select>
-           
+
         </div>
 
-    </div>
+        </div>
     <div class="form-group">
         <input type="submit" value="Create" class="btn btn-primary" ng-click="SaveCard()" />
     </div>

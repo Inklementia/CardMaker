@@ -10,15 +10,15 @@ using SimpleCardMaker.DAL;
 namespace SimpleCardMaker.DAL.Migrations
 {
     [DbContext(typeof(CardDbContext))]
-    [Migration("20210331143417_initial")]
+    [Migration("20210401042756_initial")]
     partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .HasAnnotation("ProductVersion", "3.1.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("SimpleCardMaker.DAL.DBO.Card", b =>
@@ -109,20 +109,6 @@ namespace SimpleCardMaker.DAL.Migrations
                     b.HasOne("SimpleCardMaker.DAL.DBO.UnitType", "UnitType")
                         .WithMany("Cards")
                         .HasForeignKey("UnitTypeId");
-
-                    b.Navigation("Keyword");
-
-                    b.Navigation("UnitType");
-                });
-
-            modelBuilder.Entity("SimpleCardMaker.DAL.DBO.Keyword", b =>
-                {
-                    b.Navigation("Cards");
-                });
-
-            modelBuilder.Entity("SimpleCardMaker.DAL.DBO.UnitType", b =>
-                {
-                    b.Navigation("Cards");
                 });
 #pragma warning restore 612, 618
         }

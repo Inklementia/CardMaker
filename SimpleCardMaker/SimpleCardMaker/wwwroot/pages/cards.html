@@ -39,8 +39,8 @@
             <td>{{card.defence}}</td>
             <td>{{card.manaCost}}</td>
             <td><img src="{{ card.imageFileName }}" alt="Alternate Text" class="img-fluid" style="max-width:200px" /></td>
-            <td>{{card.keywordId ? card.keywordId : "-"}}</td>
-            <td>{{card.unitTypeId ? card.unitTypeId : "-"}}</td>
+            <td>{{card.keywordId ? card.keyword.name : "-"}}</td>
+            <td>{{card.unitTypeId ? card.unitType.name : "-"}}</td>
             <td>
                 <a href="#!/cards/edit/{{card.id}}" class="btn btn-warning"><i class="fa fa-pen"></i></a>
                 <a href="#" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>

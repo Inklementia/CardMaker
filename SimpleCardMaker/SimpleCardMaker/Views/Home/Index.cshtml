@@ -153,21 +153,21 @@
                 $http.get('@Url.Action("GetKeywords", "Keywords")')
                     .then(function (response) {
                         $scope.keywords = response.data;
+                        console.log($scope.keywords);
                     });
             $scope.unitTypes = [];
             $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
                 .then(function (response) {
                     $scope.unitTypes = response.data;
                 });
-            $scope.GetCards = function () {
-                var url = '@Url.Action("GetCards", "Cards")/' + $routeParams.cardId;
-                $http.get(url)
-                    .then(function (response) {
-                        $scope.card = response.data;
-                    });
-            };
+          
+            $http.get('@Url.Action("GetCards", "Cards")/' + $routeParams.cardId)
+                .then(function (response) {
+                    $scope.card = response.data;
+              
+                });
             $scope.SaveCard = function () {
-                $http.post('@Url.Action("PutCard", "Cards")', $scope.card)
+                $http.put('@Url.Action("GetCards", "Cards")/' + $routeParams.cardId, $scope.card)
                     .then(function (response) {
                         $location.path('/cards');
                     })

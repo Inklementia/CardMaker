@@ -48,8 +48,8 @@ namespace SimpleCardMaker.DAL
             var cards = new Card[]
            {
 
-                new Card{Name="Example Card",Description="Just an example of a card", Attack = 3, Defence =3, ManaCost=2, ImageFileName="uploads/test.png", KeywordId=1, UnitTypeId=1},
-                new Card{Name="Example Card 2",Description="Just an example of a card 2", Attack = 5, Defence =3, ManaCost=2, ImageFileName="uploads/test.png", KeywordId=2, UnitTypeId=1},
+                new Card{Name="Example Card",Description="Just an example of a card", Attack = 3, Defence =3, ManaCost=2, ImageFileName="uploads/default.png", KeywordId=1, UnitTypeId=1},
+                new Card{Name="Example Card 2",Description="Just an example of a card 2", Attack = 5, Defence =3, ManaCost=2, ImageFileName="uploads/default.png", KeywordId=2, UnitTypeId=1},
 
            };
 
