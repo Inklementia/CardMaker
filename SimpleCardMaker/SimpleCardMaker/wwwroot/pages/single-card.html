@@ -1,0 +1,15 @@
+﻿
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <img class="card-img-top" src="{{card.imageFileName}}" alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{card.name}}</h5>
+                    <p class="card-text">{{card.description}}</p>
+                    {{card.unitTypeId ? card.unitType.name : "-"}}
+                    {{card.keywordId ? card.keyword.name : "-"}}
+                </div>
+            </div>
+            <a href="#" class="btn btn-primary">Save Card</a>
+        </div>
+    </div>

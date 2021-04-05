@@ -24,6 +24,12 @@ namespace SimpleCardMaker.DAL.Repositories
                     .OrderByDescending(c => c.Id)
                     .ToListAsync();    
         }
-    
+        public async Task<Card> GetByIdAsyncWithKeywordAndUnitType(int id)
+        {
+            return await _context.Set<Card>()
+                .Include(k => k.Keyword)
+                .Include(u => u.UnitType)
+                .FirstOrDefaultAsync(e => e.Id == id);
+        }
     }
 }

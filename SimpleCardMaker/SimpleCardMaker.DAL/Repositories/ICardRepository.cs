@@ -9,5 +9,6 @@ namespace SimpleCardMaker.DAL.Repositories
     public interface ICardRepository : IRepository<Card>
     {
         Task<List<Card>> GetAllAsyncWithKeywordsAndUnitTypes();
+        Task<Card> GetByIdAsyncWithKeywordAndUnitType(int id);
     }
 }

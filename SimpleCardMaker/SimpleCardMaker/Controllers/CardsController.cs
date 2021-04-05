@@ -62,7 +62,7 @@ namespace SimpleCardMaker.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Card>> GetCard(int id)
         {
-            var card = await _unitOfWork.Cards.GetByIdAsync(id);
+            var card = await _unitOfWork.Cards.GetByIdAsyncWithKeywordAndUnitType(id);
 
             if (card == null)
             {

@@ -42,8 +42,9 @@
             <td>{{card.keywordId ? card.keyword.name : "-"}}</td>
             <td>{{card.unitTypeId ? card.unitType.name : "-"}}</td>
             <td>
+                <a href="#!/cards/{{card.id}}" class="btn btn-success"><i class="fa fa-eye"></i></a>
                 <a href="#!/cards/edit/{{card.id}}" class="btn btn-warning"><i class="fa fa-pen"></i></a>
-                <a href="#" class="btn btn-danger"><i class="fa fa-trash-alt"></i></a>
+                <button class="btn btn-danger" ng-click="DeleteCard(card)"><i class="fa fa-trash-alt"></i></button>
 
             </td>
 </tr>
