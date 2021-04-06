@@ -18,7 +18,7 @@ namespace SimpleCardMaker.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CardsController : ControllerBase
     {
         private IUnitOfWork _unitOfWork;

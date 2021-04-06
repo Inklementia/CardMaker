@@ -89,6 +89,7 @@
                 email: "",
                 password: ""
             }
+
             $scope.errorMessage = "";
             $scope.Register = function () {
 
@@ -99,16 +100,21 @@
                     })
                 }
         }])
-         .controller("LoginController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
+        .controller("LoginController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
             $scope.user = {
                 email: "",
                 password: ""
             }
-            $scope.errorMessage = "";
+            $scope.token = "";
             $scope.Login = function () {
 
                 $http.post('@Url.Action("Login", "Auth")', $scope.user)
                     .then(function (response) {
+                        console.log(response.data.token);
+                  
+
+                        $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                        $window.localStorage.token = JSON.stringify(response.data.token);
                         $location.path('/cards');
                     })
                 }
