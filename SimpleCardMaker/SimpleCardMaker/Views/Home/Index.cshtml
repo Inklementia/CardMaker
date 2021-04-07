@@ -19,16 +19,6 @@
                         templateUrl: "pages/index.html",
                         controller: "IndexController"
                     })
-                .when("/auth/login",
-                    {
-                        templateUrl: "pages/login.html",
-                        controller: "LoginController"
-                    })
-                .when("/auth/register",
-                    {
-                        templateUrl: "pages/register.html",
-                        controller: "RegisterController"
-                    })
                 .when("/cards",
                     {
                         templateUrl: "pages/cards.html",
@@ -45,7 +35,7 @@
                         controller: "EditCardController"
                     })
                 .when("/cards/:cardId",
-                   {
+                    {
                         templateUrl: "pages/single-card.html",
                         controller: "SingleCardController"
                     })
@@ -82,43 +72,6 @@
         })
         .controller("IndexController", ["$scope", "$http", function ($scope, $http) {
             $scope.message = "Welcome!";
-        }])
-        .controller("RegisterController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
-            $scope.user = {
-                username: "",
-                email: "",
-                password: ""
-            }
-
-            $scope.errorMessage = "";
-            $scope.Register = function () {
-
-                $http.post('@Url.Action("Register", "Auth")', $scope.user)
-                    .then(function (response) {
-                        
-                        $location.path('/auth/login');
-                    })
-                }
-        }])
-        .controller("LoginController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
-            $scope.user = {
-                email: "",
-                password: ""
-            }
-            $scope.token = "";
-            $scope.Login = function () {
-
-                $http.post('@Url.Action("Login", "Auth")', $scope.user)
-                    .then(function (response) {
-                        console.log(response.data.token);
-                  
-
-                        $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
-                        $window.localStorage.token = JSON.stringify(response.data.token);
-                        $location.path('/cards');
-                    })
-                }
-
         }])
         .controller("CardsController", ["$scope", "$http", function ($scope, $http) {
             $scope.cards = [];
@@ -161,7 +114,7 @@
                 $http.delete("@Url.Action("GetCards", "Cards")/" + card.id).then(function (response) {
                     var index = $scope.cards.indexOf(card);
                     $scope.cards.splice(index, 1);
-
+             
                 });
             }
             $scope.GetCards(null);

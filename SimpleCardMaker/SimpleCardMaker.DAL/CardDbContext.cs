@@ -4,11 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SimpleCardMaker.DAL.DBO;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace SimpleCardMaker.DAL
 {
-    public class CardDbContext : IdentityDbContext
+    public class CardDbContext : DbContext
     {
         public CardDbContext(DbContextOptions<CardDbContext> options) : base(options)
         {
