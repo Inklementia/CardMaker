@@ -16,6 +16,7 @@ namespace SimpleCardMaker.DAL.Repositories
         { 
         }
 
+        // get list with all keywords and unit types
         public async Task<List<Card>> GetAllAsyncWithKeywordsAndUnitTypes()
         {
                 return await _context.Set<Card>()
@@ -24,6 +25,8 @@ namespace SimpleCardMaker.DAL.Repositories
                     .OrderByDescending(c => c.Id)
                     .ToListAsync();    
         }
+
+        // get single card with keyword and unit type
         public async Task<Card> GetByIdAsyncWithKeywordAndUnitType(int id)
         {
             return await _context.Set<Card>()

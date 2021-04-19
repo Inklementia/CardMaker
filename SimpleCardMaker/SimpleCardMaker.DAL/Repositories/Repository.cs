@@ -41,13 +41,13 @@ namespace SimpleCardMaker.DAL.Repositories
             */
 
             // for api
-
             _context.Set<TEntity>().Remove(entity);
             // _context.SaveChangesAsync(); 
         }
 
         public async Task<List<TEntity>> GetAllAsync()
         {
+            // get list in desc order by id
             return await _context.Set<TEntity>().OrderByDescending(e => e.Id).ToListAsync();
         }
 
@@ -55,6 +55,7 @@ namespace SimpleCardMaker.DAL.Repositories
         {
             return await _context.Set<TEntity>().FirstOrDefaultAsync(e => e.Id == id);
         }
+        // check if that id exists
         public bool Exists(int id)
         {
             return _context.Set<TEntity>().Any(e => e.Id == id);

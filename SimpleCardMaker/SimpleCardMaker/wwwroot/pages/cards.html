@@ -1,38 +1,42 @@
-﻿<div class="container d-flex justify-content-between align-items-center">
-    <div class="row mb-3">
-        <div class="form-inline">
-            <select class="form-control mr-3" ng-options="keyword as keyword.name for keyword in keywords"
-                    ng-model="selectedKeyword" ng-change="GetCards()">
-                <option selected value="">All Keywords</option>
-            </select>
+﻿<div class="container mb-3">
 
-            <select class="form-control" ng-options="unittype as unittype.name for unittype in unittypes"
-                    ng-model="selectedUnitType" ng-change="GetCards()">
-                <option selected value="">All Unit Types</option>
-            </select>
+    <h1>Card Gallery</h1>
+    <div class="d-flex justify-content-between align-items-center">
+
+
+        <div>
+            Total {{cards.length}} card{{cards.length == 1 ? "" : "s"}}. </div>
+        <div class="d-flex align-content-center align-items-center">
+            <div class="mr-3">
+               Show only cards with 
+            </div>
+            <div class="form-inline">
+                <select class="form-control" ng-options="keyword as keyword.name for keyword in keywords"
+                        ng-model="selectedKeyword" ng-change="GetCards()">
+                    <option selected value="">All Keywords</option>
+                </select>
+                <div class="mx-3">and</div>
+                <select class="form-control" ng-options="unittype as unittype.name for unittype in unittypes"
+                        ng-model="selectedUnitType" ng-change="GetCards()">
+                    <option selected value="">All Unit Types</option>
+                </select>
+            </div>
         </div>
     </div>
-    <a href="#!/cards/add" class="btn btn-dark">Add card</a>
 </div>
-
-
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-lg-8">
-            <div class="d-flex flex-wrap ">
-       
+<div class="container">
+            <div class="card-gallery">
                     <div class="card" ng-repeat="card in cards">
-                        <div class="card-img" style="background-image:url({{ card.imageFileName }})">
-                        </div>
+                        <div class="card-img" style="background-image:url({{ card.imageFileLink }})"></div>
                         <div class="card-info">
                             <div class="card-bg">
                                 <div class="card-mana">{{card.manaCost}}</div>
                                 <div class="card-text">
 
-                                    <div class='card-unittype'>{{ card.unitType.name }}</div>
+                                    <div class='card-unittype' ng-hide="{{ card.unitType == null ? true : false }}">{{ card.unitType.name }}</div>
 
                                     <h4>{{card.name}}</h4>
-                                    <div class="card-keyword">{{ card.keyword.name }}</div>
+                                    <div class="card-keyword" ng-hide="{{ card.keyword == null ? true : false }}"><i class="{{ card.keyword.icon }} pr-2"></i>{{ card.keyword.name }}</div>
                                     <p>{{card.description}}</p>
                                     <a href="#!/cards/{{card.id}}" class="card-link"></a>
                                 </div>
@@ -46,6 +50,5 @@
                 
             </div>
         </div>
-        <div class="col-lg-4"></div>
-    </div>
-</div>
+
+

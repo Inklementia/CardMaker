@@ -13,7 +13,8 @@ namespace SimpleCardMaker.DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Icon = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -45,7 +46,8 @@ namespace SimpleCardMaker.DAL.Migrations
                     ManaCost = table.Column<int>(type: "int", nullable: false),
                     Attack = table.Column<int>(type: "int", nullable: false),
                     Defence = table.Column<int>(type: "int", nullable: false),
-                    ImageFileName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageFileLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ArtDescription = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     KeywordId = table.Column<int>(type: "int", nullable: true),
                     UnitTypeId = table.Column<int>(type: "int", nullable: true)
                 },

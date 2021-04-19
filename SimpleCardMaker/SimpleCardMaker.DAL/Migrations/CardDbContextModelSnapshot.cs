@@ -26,6 +26,9 @@ namespace SimpleCardMaker.DAL.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("ArtDescription")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Attack")
                         .HasColumnType("int");
 
@@ -35,7 +38,8 @@ namespace SimpleCardMaker.DAL.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageFileName")
+                    b.Property<string>("ImageFileLink")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("KeywordId")
@@ -68,6 +72,9 @@ namespace SimpleCardMaker.DAL.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Icon")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")

@@ -27,17 +27,19 @@ namespace SimpleCardMaker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-           services.AddControllersWithViews();
-          // services.AddNewtonsoftJson();
-     
+            services.AddControllersWithViews();
+        
+            // to use any repository that inherit from generic repository class
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-           //services.AddScoped<IRepository<Keyword>, Repository<Keyword>>();
-           //services.AddScoped<IRepository<UnitType>, Repository<UnitType>>();
+
+            // for spesific card repsitory
             services.AddTransient<ICardRepository, CardRepository>();
             services.AddTransient<IUnitOfWork, UnitOfWork>();
 
+            // for db connection
             services.AddDbContext<CardDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,10 +53,11 @@ namespace SimpleCardMaker
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+          
             app.UseStaticFiles();
 
             app.UseRouting();
-
+ 
             //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

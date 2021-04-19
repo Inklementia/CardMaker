@@ -20,11 +20,11 @@ a {
 }
 .card {
     height: 360px;
-    width: 230px;
+    min-width: 250px;
     padding: 10px;
     border-width: 3px;
     background:#fff;
-    margin:0 10px 20px 10px;
+    margin:0 0 30px 0;
 }
 .card-img {
     border-radius: 5px 5px 5px 5px/25px 25px 25px 5px;
@@ -38,10 +38,10 @@ a {
     .card-img:before {
         content: "";
         position: absolute;
-        top: 0;
+        bottom: 0;
         left: 0;
         width: 100%;
-        height: 100%;
+        height: 60%;
         background: rgb(0,0,0);
         background: -moz-linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
         background: -webkit-linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
@@ -114,26 +114,25 @@ a {
     flex-direction:column;
     align-items:center;
     justify-content:flex-end;
-    padding-bottom:40px
+    
+    padding:0 12px 40px 12px;
 }
 .card h4{
     font-size:25px;
     margin-bottom:5px;
+    text-align:center
 }
-.card p{
-    margin-bottom:15px
+.card p {
+    margin-bottom: 15px;
+    text-align: center;
+    text-align:center
 }
 .card-keyword {
     padding: 3px 7px;
     letter-spacing:2px;
     color: #ffffbd;
     text-transform: uppercase;
-    border-radius: 5px 5px 5px 5px/25px 25px 25px 5px;
-    background: rgb(131,58,180);
-    background: -moz-linear-gradient(159deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-    background: -webkit-linear-gradient(159deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-    background: linear-gradient(159deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#833ab4",endColorstr="#fcb045",GradientType=1);
+   border:2px solid #ffffbd;
     margin-bottom: 5px;
 }
 .card-unittype {
@@ -189,11 +188,16 @@ input.ng-touched.ng-valid, .ng-submitted input.ng-valid {
   background-color: #1b6ec2;
   border-color: #1861ac;
 }
-
+.card-gallery {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr ;
+    grid-auto-columns:250px;
+    grid-column-gap: 36px
+}
 /* Sticky footer styles
 -------------------------------------------------- */
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 @media (min-width: 768px) {
   html {

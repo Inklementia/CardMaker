@@ -12,6 +12,7 @@ namespace SimpleCardMaker.DAL.DBO
 {
     public class Card : IEntity
     {
+        //DISCLAIMER: I DO NOT CURRENTLY USE THOSE ERROR MESSAGES, YET I HAVE USED THEM FOR MVC 
         [Key]
         public int Id { get; set; }
 
@@ -35,13 +36,22 @@ namespace SimpleCardMaker.DAL.DBO
         [Range(0, int.MaxValue, ErrorMessage = "You do not want to have negative value here")]
         public int Defence { get; set; } = 0;
 
-       
-        public string ImageFileName { get; set; } = "uploads/default.png";
+        // FOR FUTURE
+        //public string ImageFileName { get; set; } = "uploads/default.png";
 
-       // [Required(ErrorMessage = "Please, Set {0} for your card")]
-       // [NotMapped]
-       // [DisplayName("Image")]
-       // public IFormFile ImageFile { get; set; }
+        //public string FullImageFileName { get; set; } = "uploads/default-full.png";
+
+        //last thought emergency Plan B
+        [Required]
+        public string ImageFileLink { get; set; } = "https://cdn-lor.mobalytics.gg/production/images/set3/en_us/img/card/game/03SI009-full.webp";
+
+        [DisplayName("Card art description")]
+        public string ArtDescription { get; set; }
+
+        // [Required(ErrorMessage = "Please, Set {0} for your card")]
+        // [NotMapped]
+        // [DisplayName("Image")]
+        // public IFormFile ImageFile { get; set; }
 
         [DisplayName("Keyword")]
         public int? KeywordId { get; set; }

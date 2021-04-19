@@ -5,239 +5,35 @@
 <div ng-app="SimpleCardMaker">
     <div ng-view></div>
 </div>
+<script type="text/javascript" src="js/html2canvas.min.js"></script>
+<script type="text/javascript">
+    function downloadimage() {
+        var container = document.getElementById("htmltoimage"); // full page
+        // that unfortunately WON'T load card image
+        var cardArt = document.getElementById("cardArt");
+        var cardArtOld = cardArt.style.backgroundImage;
+        //set default image for .jpg
+        cardArt.style.backgroundImage = "url('images/default.png')";
+        html2canvas(container, { allowTaint: true, scale: 5 }).then(function (canvas) {
+            var link = document.createElement("a");
+            document.body.appendChild(link);
+            //for generating file name
+            var cardName = document.getElementById("card-name").textContent;
+            link.download = cardName.toLowerCase().replace(/\s/g, '') + "_card.jpg";
+            link.href = canvas.toDataURL('image/jpeg', 1.0);
+            link.target = '_blank';
+            link.click();
+            //return old image
+            cardArt.style.backgroundImage = cardArtOld;
+        });
+    }
+</script>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
-<script type="text/javascript">
-
-    angular
-        .module("SimpleCardMaker", ["ngRoute"])
-        .config(function ($routeProvider) {
-            $routeProvider
-                .when("/",
-                    {
-                        templateUrl: "pages/index.html",
-                        controller: "IndexController"
-                    })
-                .when("/cards",
-                    {
-                        templateUrl: "pages/cards.html",
-                        controller: "CardsController"
-                    })
-                .when("/cards/add",
-                    {
-                        templateUrl: "pages/add-edit-card.html",
-                        controller: "AddCardController"
-                    })
-                .when("/cards/edit/:cardId",
-                    {
-                        templateUrl: "pages/add-edit-card.html",
-                        controller: "EditCardController"
-                    })
-                .when("/cards/:cardId",
-                    {
-                        templateUrl: "pages/single-card.html",
-                        controller: "SingleCardController"
-                    })
-                .when("/keywords",
-                    {
-                        templateUrl: "pages/keywords.html",
-                        controller: "KeywordsController"
-                    })
-                .when("/keywords/add",
-                    {
-                        templateUrl: "pages/add-edit-keyword.html",
-                        controller: "AddKeywordController"
-                    })
-                .when("/unittypes",
-                    {
-                        templateUrl: "pages/unittypes.html",
-                        controller: "UnitTypesController"
-                    })
-                .when("/unittypes/add",
-                    {
-                        templateUrl: "pages/add-edit-unittype.html",
-                        controller: "AddUnitTypeController"
-                    })
-                .when("/404",
-                    {
-                        templateUrl: "pages/404.html",
-                        controller: "NowFoundController"
-                    })
-                .otherwise(
-                    {
-                        redirectTo: "/404"
-                    }
-                );
-        })
-        .controller("IndexController", ["$scope", "$http", function ($scope, $http) {
-            $scope.message = "Welcome!";
-        }])
-        .controller("CardsController", ["$scope", "$http", function ($scope, $http) {
-            $scope.cards = [];
-            $scope.keywords = [];
-            $scope.unittypes = [];
-
-            $scope.selectedKeyword = null;
-            $scope.selectedUnitType = null;
-
-            /* getting unitypes and keywords */
-            $http.get('@Url.Action("GetKeywords", "Keywords")')
-                .then(function (response) {
-                    $scope.keywords = response.data;
-                });
-            $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
-                .then(function (response) {
-                    $scope.unittypes = response.data;
-                });
-            /* getting unitypes and keywords end*/
-
-            $scope.GetCards = function () {
-                var url = '@Url.Action("GetCards", "Cards")';
-                if ($scope.selectedKeyword && $scope.selectedUnitType) {
-                    url += '?keywordId=' + $scope.selectedKeyword.id + '&unitTypeId=' + $scope.selectedUnitType.id;
-                }
-                else if ($scope.selectedKeyword) {
-                    url += '?keywordId=' + $scope.selectedKeyword.id;
-                }
-                else if ($scope.selectedUnitType) {
-                    url += '?unitTypeId=' + $scope.selectedUnitType.id;
-                }
-                console.log(url);
-                $http.get(url)
-                    .then(function (response) {
-                        $scope.cards = response.data;
-                        console.log(response.data);
-                    });
-            };
-            $scope.DeleteCard = function (card) {
-                $http.delete("@Url.Action("GetCards", "Cards")/" + card.id).then(function (response) {
-                    var index = $scope.cards.indexOf(card);
-                    $scope.cards.splice(index, 1);
-             
-                });
-            }
-            $scope.GetCards(null);
-
-        }])
-        .controller("AddCardController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
-            $scope.card = {
-                id: 0,
-                name: "",
-                description: "",
-                attack: 0,
-                defence: 0,
-                manaCost: 0,
-                imageFileName: "uploads/default.png",
-                keywordId: null,
-                unitTypeId: null
-            };
-            $scope.keywords = [];
-            $http.get('@Url.Action("GetKeywords", "Keywords")')
-                .then(function (response) {
-                    $scope.keywords = response.data;
-                });
-            $scope.unitTypes = [];
-            $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
-                .then(function (response) {
-                    $scope.unitTypes = response.data;
-                });
-
-            $scope.SaveCard = function () {
-                $http.post('@Url.Action("PostCard", "Cards")', $scope.card)
-                    .then(function (response) {
-                        $location.path('/cards');
-                    })
-            }
-        }])
-        .controller("EditCardController", ["$scope", "$http", '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
-            $scope.card = {
-                id: 0,
-                name: "",
-                description: "",
-                attack: 0,
-                defence: 0,
-                manaCost: 0,
-                imageFileName: "uploads/default.png",
-                keywordId: null,
-                unitTypeId: null
-            };
-            $scope.keywords = [];
-            $http.get('@Url.Action("GetKeywords", "Keywords")')
-                .then(function (response) {
-                    $scope.keywords = response.data;
-                });
-            $scope.unitTypes = [];
-            $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
-                .then(function (response) {
-                    $scope.unitTypes = response.data;
-                });
-
-            $http.get('@Url.Action("GetCards", "Cards")/' + $routeParams.cardId)
-                .then(function (response) {
-                    $scope.card = response.data;
-                });
-
-            $scope.SaveCard = function () {
-                $http.put('@Url.Action("GetCards", "Cards")/' + $routeParams.cardId, $scope.card)
-                    .then(function (response) {
-                        $location.path('/cards');
-                    })
-            }
-
-        }])
-        .controller("SingleCardController", ["$scope", "$http", '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
-            $scope.card = [];
-
-            $http.get('@Url.Action("GetCards", "Cards")/' + $routeParams.cardId)
-                .then(function (response) {
-                    $scope.card = response.data;
-                    console.log(response.data);
-                });
-
-        }])
-            .controller("KeywordsController", ["$scope", "$http", function ($scope, $http) {
-                $scope.keywords = [];
-                $http.get('@Url.Action("GetKeywords", "Keywords")')
-                    .then(function (response) {
-                        $scope.keywords = response.data;
-                    });
-            }])
-            .controller("AddKeywordController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
-                $scope.keyword = {
-                    id: 0,
-                    name: "",
-                    description: ""
-                };
-
-                $scope.SaveKeyword = function () {
-                    $http.post('@Url.Action("PostKeyword", "Keywords")', $scope.keyword)
-                        .then(function (response) {
-                            $location.path('/keywords');
-                        })
-                }
-
-            }])
-            .controller("UnitTypesController", ["$scope", "$http", function ($scope, $http) {
-                $scope.unittypes = [];
-                $http.get('@Url.Action("GetUnitTypes", "UnitTypes")')
-                    .then(function (response) {
-                        $scope.unittypes = response.data;
-                    })
-            }])
-            .controller("AddUnitTypeController", ["$scope", "$http", '$location', function ($scope, $http, $location) {
-                $scope.unittype = {
-                    id: 0,
-                    name: "",
-                    description: ""
-                };
-
-                $scope.SaveUnitType = function () {
-                    $http.post('@Url.Action("PostUnitType", "UnitTypes")', $scope.unittype)
-                        .then(function (response) {
-                            $location.path('/unittypes');
-                        })
-                }
-
-            }]);
-</script>
+<script type="text/javascript" src="~/js/app.module.js"></script>
+<script type="text/javascript" src="~/js/app.routes.js"></script>
+<script type="text/javascript" src="~/js/home.controller.js"></script>
+<script type="text/javascript" src="~/js/cards.controller.js"></script>
+<script type="text/javascript" src="~/js/keywords.controller.js"></script>
+<script type="text/javascript" src="~/js/unittypes.controller.js"></script>

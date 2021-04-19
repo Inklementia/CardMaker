@@ -19,8 +19,10 @@ namespace SimpleCardMaker.DAL.DBO
 
   
         [DisplayName("Keyword Description")]
-
         public string Description { get; set; }
+
+        [DisplayName("Keyword Icon")]
+        public string Icon { get; set; } = "fas fa-bolt";
 
         [JsonIgnore]
         public virtual ICollection<Card> Cards { get; set; }
