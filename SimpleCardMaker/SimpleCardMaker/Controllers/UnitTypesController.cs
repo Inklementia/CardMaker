@@ -27,6 +27,7 @@ namespace SimpleCardMaker.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UnitType>>> GetUnitTypes()
         {
+            // getting list if unittypes
             return await _unitOfWork.UnitTypes.GetAllAsync();
         }
 
@@ -34,6 +35,7 @@ namespace SimpleCardMaker.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<UnitType>> GetUnitType(int id)
         {
+            // findimg unittype by id
             var unitType = await _unitOfWork.UnitTypes.GetByIdAsync(id);
 
             if (unitType == null)
@@ -49,15 +51,17 @@ namespace SimpleCardMaker.Controllers
         [HttpPut("{id}")]
         public IActionResult PutUnitType(int id, UnitType unitType)
         {
+            // no unittype with such id
             if (id != unitType.Id)
             {
                 return BadRequest();
             }
+            // validation errors
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-          
+            // trying to update
             try
             {
                  _unitOfWork.UnitTypes.Update(unitType);
@@ -83,11 +87,12 @@ namespace SimpleCardMaker.Controllers
         [HttpPost]
         public async Task<ActionResult<UnitType>> PostUnitType(UnitType unitType)
         {
+            //validation errors
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-        
+            // creating
             await _unitOfWork.UnitTypes.CreateAsync(unitType);
             _unitOfWork.Complete();
             
@@ -98,12 +103,13 @@ namespace SimpleCardMaker.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUnitType(int id)
         {
+            //finding unittype with such id
             var unitType = await _unitOfWork.UnitTypes.GetByIdAsync(id);
             if (unitType == null)
             {
                 return NotFound();
             }
-
+            //deleteing
             _unitOfWork.UnitTypes.Delete(unitType);
             _unitOfWork.Complete();
             return NoContent();

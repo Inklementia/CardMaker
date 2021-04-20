@@ -21,14 +21,9 @@ namespace SimpleCardMaker.Controllers
     {
         private IUnitOfWork _unitOfWork;
 
-        private readonly IWebHostEnvironment _hostEnvironment;
-
-        public CardsController(
-            IUnitOfWork unitOfWork,
-            IWebHostEnvironment hostEnvironment)
+        public CardsController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            _hostEnvironment = hostEnvironment;
         }
 
         // GET: api/Cards
@@ -36,21 +31,27 @@ namespace SimpleCardMaker.Controllers
         public async Task<ActionResult<IEnumerable<Card>>> GetCards(int? keywordId, int? unittypeId)
         {
             var cards = await _unitOfWork.Cards.GetAllAsyncWithKeywordsAndUnitTypes();
+            // if smth is selected from select list 
             if (keywordId != null && unittypeId != null)
             {
+                // filter cards accordingly
                 var filteredCards = cards
                     .Where(k => k.KeywordId == keywordId.Value)
                     .Where(u => u.UnitTypeId == unittypeId.Value);
                 return Ok(filteredCards);
             }
+            // if only keyword is selected
             else if (keywordId != null)
             {
+                // filter cards only by keywordss
                 var filteredCards = cards
                     .Where(k => k.KeywordId == keywordId.Value);
                 return Ok(filteredCards);
             }
-            else if(unittypeId != null)
+            // if only unit type is selected
+            else if (unittypeId != null)
             {
+                // filter cards only by unit types
                 var filteredCards = cards
                     .Where(u => u.UnitTypeId == unittypeId.Value);
                 return Ok(filteredCards);
@@ -80,15 +81,17 @@ namespace SimpleCardMaker.Controllers
         [HttpPut("{id}")]
         public IActionResult PutCard(int id, Card card)
         {
+            // if card id does not exist
             if (id != card.Id)
             {
                 return BadRequest();
             }
+            // if there are validation errors
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-       
+            // if everything is fine -> try to update
             try
             {
                 _unitOfWork.Cards.Update(card);
@@ -114,11 +117,12 @@ namespace SimpleCardMaker.Controllers
         [HttpPost]
         public async Task<ActionResult<Card>> PostCard(Card card)
         {
+            // if there are validation errors
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+            // if everything is fine -> create
             await _unitOfWork.Cards.CreateAsync(card);
             _unitOfWork.Complete();
 
@@ -129,12 +133,13 @@ namespace SimpleCardMaker.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCard(int id)
         {
+            // finding an existing card by id
             var card = await _unitOfWork.Cards.GetByIdAsync(id);
             if (card == null)
             {
                 return NotFound();
             }
-
+            // if there is a card with such id -> delete
             _unitOfWork.Cards.Delete(card);
             _unitOfWork.Complete();
 

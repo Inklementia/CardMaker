@@ -5,3 +5,4 @@
     "myAppKeywordCtrl",
     "myAppUnitTypeCtrl"
 ]);
+// registering config rountes and controllers

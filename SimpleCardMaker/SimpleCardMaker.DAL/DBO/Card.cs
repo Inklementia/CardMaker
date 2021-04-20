@@ -48,6 +48,7 @@ namespace SimpleCardMaker.DAL.DBO
         [DisplayName("Card art description")]
         public string ArtDescription { get; set; }
 
+        // FOR FUTURE
         // [Required(ErrorMessage = "Please, Set {0} for your card")]
         // [NotMapped]
         // [DisplayName("Image")]

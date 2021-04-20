@@ -1,18 +1,28 @@
-﻿<form name="unittypeform" class="row" novalidate>
-    <div class="form-group col-12">
-        <label for="Name">Unit Type Name</label>
-        <input type="text" ng-model="unittype.name" name="name" id="Name" class="form-control" placeholder="Unit type name" ng-required="true"  />
-        <div ng-show="unittypeform.$submitted || unittypeform.name.$touched">
-            <span ng-show="unittypeform.name.$error.required" class="text-danger">Please fill the field</span>
+﻿<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-10">
+
+            <div class="form-card">
+                <h1>Add Unit Type</h1>
+                <form name="unittypeform" class="row" novalidate>
+                    <div class="form-group col-12">
+                        <label for="Name">Unit Type Name</label>
+                        <input type="text" ng-model="unittype.name" name="name" id="Name" class="form-control" placeholder="Unit type name" ng-required="true" />
+                        <div ng-show="unittypeform.$submitted || unittypeform.name.$touched">
+                            <span ng-show="unittypeform.name.$error.required" class="text-danger">Please fill the field</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-12">
+                        <label for="Description">Unit Type description</label>
+                        <textarea ng-model="unittype.description" rows="3" name="description" id="Description" placeholder="Unit type description" class="form-control"></textarea>
+
+                    </div>
+
+                    <div class="form-group col-12">
+                        <input type="submit" value="Create" class="btn btn-primary" ng-click="SaveUnitType()" />
+                    </div>
+                </form>
+                </div>
         </div>
-    </div>
-    <div class="form-group col-12">
-        <label for="Description">Unit Type description</label>
-        <textarea ng-model="unittype.description" rows="3" name="description" id="Description" placeholder="Unit type description" class="form-control"></textarea>
-       
-    </div>
-   
-    <div class="form-group col-12">
-        <input type="submit" value="Create" class="btn btn-primary" ng-click="SaveUnitType()" />
-    </div>
-</form>
+        </div>
+</div>

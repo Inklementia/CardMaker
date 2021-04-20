@@ -27,6 +27,7 @@ namespace SimpleCardMaker.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Keyword>>> GetKeywords()
         {
+            // getting list of keywords
             return await _unitOfWork.Keywords.GetAllAsync();
         }
 
@@ -34,6 +35,7 @@ namespace SimpleCardMaker.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Keyword>> GetKeyword(int id)
         {
+            // getting a single keyword
             var keyword = await _unitOfWork.Keywords.GetByIdAsync(id);
 
             if (keyword == null)
@@ -49,34 +51,33 @@ namespace SimpleCardMaker.Controllers
         [HttpPut("{id}")]
         public IActionResult PutKeyword(int id, Keyword keyword)
         {
-
+            // if there is no keyword with such id
             if (id != keyword.Id)
             {
                 return BadRequest();
             }
+            // if there are validation errors
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-        
-                try
-                {
-                    _unitOfWork.Keywords.Update(keyword);
-                    _unitOfWork.Complete();
+            // updating
+            try
+            {
+                _unitOfWork.Keywords.Update(keyword);
+                _unitOfWork.Complete();
             }
-                catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_unitOfWork.Keywords.Exists(id))
                 {
-                    if (!_unitOfWork.Keywords.Exists(id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return NotFound();
                 }
-            
-       
+                else
+                {
+                    throw;
+                }
+            }
 
             return NoContent();
         }
@@ -86,10 +87,12 @@ namespace SimpleCardMaker.Controllers
         [HttpPost]
         public async Task<ActionResult<Keyword>> PostKeyword(Keyword keyword)
         {
+            // if there are validation errors
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
+            // creating
             await _unitOfWork.Keywords.CreateAsync(keyword);
             _unitOfWork.Complete();
 
@@ -100,12 +103,13 @@ namespace SimpleCardMaker.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteKeyword(int id)
         {
+            // finding keyword by id
             var keyword = await _unitOfWork.Keywords.GetByIdAsync(id);
             if (keyword == null)
             {
                 return NotFound();
             }
-
+            // deleting
             _unitOfWork.Keywords.Delete(keyword);
             _unitOfWork.Complete();
             return NoContent();

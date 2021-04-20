@@ -21,6 +21,7 @@ namespace SimpleCardMaker.DAL.DBO
         [DisplayName("Keyword Description")]
         public string Description { get; set; }
 
+        // Icon code class (Font Awesome)
         [DisplayName("Keyword Icon")]
         public string Icon { get; set; } = "fas fa-bolt";
 

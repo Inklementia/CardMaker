@@ -13,7 +13,6 @@ namespace SimpleCardMaker.DAL.UnitOfWork
         public IRepository<Keyword> Keywords { get; }
         public IRepository<UnitType> UnitTypes { get; }
 
-
         public UnitOfWork(
             CardDbContext context,
             ICardRepository cardRepository,

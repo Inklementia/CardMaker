@@ -1,25 +1,35 @@
-﻿<form name="keywordform" class="row" novalidate>
+﻿<div class="container">
+    <div class="row d-flex justify-content-center">
+        <div class="col-10">
 
-    <div class="form-group col-8">
-        <label for="Name">Keyword Name</label>
-        <input type="text" ng-model="keyword.name" name="name" id="Name" class="form-control" placeholder="Keyword name" ng-required="true" />
-        <div ng-show="keywordform.$submitted || keywordform.name.$touched">
-            <span ng-show="keywordform.name.$error.required" class="text-danger">Please fill the field</span>
+            <div class="form-card">
+                <h1>Add Keyword</h1>
+                <form name="keywordform" class="row" novalidate>
+
+                    <div class="form-group col-8">
+                        <label for="Name">Keyword Name</label>
+                        <input type="text" ng-model="keyword.name" name="name" id="Name" class="form-control" placeholder="Keyword name" ng-required="true" />
+                        <div ng-show="keywordform.$submitted || keywordform.name.$touched">
+                            <span ng-show="keywordform.name.$error.required" class="text-danger">Please fill the field</span>
+                        </div>
+                    </div>
+                    <div class="form-group col-4">
+                        <label for="Description">Keyword icon class (Font Awesome 5 (Free))</label>
+                        <input type="text" ng-model="keyword.icon" name="description" id="Description" placeholder="Keyword icon class" class="form-control" value="{{keyword.icon}}">
+
+                    </div>
+
+                    <div class="form-group col-12">
+                        <label for="Description">Keyword description</label>
+                        <textarea ng-model="keyword.description" rows="3" name="description" id="Description" placeholder="Keyword description" class="form-control"></textarea>
+
+                    </div>
+
+                    <div class="form-group col-12">
+                        <input type="submit" value="Create" class="btn btn-primary" ng-click="SaveKeyword()" />
+                    </div>
+                </form>
+                </div>
+            </div>
         </div>
     </div>
-    <div class="form-group col-4">
-        <label for="Description">Keyword icon class (Font Awesome 5 (Free))</label>
-        <input type="text" ng-model="keyword.icon" name="description" id="Description" placeholder="Keyword icon class" class="form-control" value="{{keyword.icon}}">
-
-    </div>
- 
-    <div class="form-group col-12">
-        <label for="Description">Keyword description</label>
-        <textarea ng-model="keyword.description" rows="3" name="description" id="Description" placeholder="Keyword description" class="form-control"></textarea>
-
-    </div>
-
-    <div class="form-group col-12">
-        <input type="submit" value="Create" class="btn btn-primary" ng-click="SaveKeyword()" />
-    </div>
-</form>

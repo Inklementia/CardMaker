@@ -3,11 +3,11 @@
         <div class="col-10">
             <div class="d-flex justify-content-between">
                 <div class="d-flex flex-column">
-                    <a href="#!/cards">Card Gallery</a>
+                    <a class="card-gallery-link" href="#!/cards">Card Gallery</a>
                     <h1>{{card.name}}</h1>
                 </div>
-                <div class="d-flex">
-                    <a href="#!/cards/edit/{{card.id}}"><i class="fas fa-pencil-alt"></i></a>
+                <div class="d-flex buttons">
+                    <a href="#!/cards/edit/{{card.id}}" class="btn btn-primary mr-2"><i class="fas fa-pencil-alt"></i></a>
                     <button class="btn btn-danger" ng-click="DeleteCard(card)"><i class="fa fa-trash-alt"></i></button>
 
                 </div>
@@ -17,8 +17,7 @@
 
 
                 <div class="card" id="htmltoimage">
-                    <div class="card-img" id="cardArt" style="background-image:url({{ card.imageFileLink }})">
-                    </div>
+                    <div class="card-img" id="cardArt" style="background-image:url({{ card.imageFileLink }})"></div>
                     <div class="card-info">
                         <div class="card-bg">
                             <div class="card-mana">{{card.manaCost}}</div>
@@ -27,7 +26,7 @@
                                 <div class='card-unittype' ng-hide="{{ card.unitType == null ? true : false }}">{{ card.unitType.name }}</div>
 
                                 <h4 id="card-name">{{card.name}}</h4>
-                                <div class="card-keyword" ng-hide="{{ card.keyword == null ? true : false }}">{{ card.keyword.name }}</div>
+                                <div class="card-keyword" ng-hide="{{ card.keyword == null ? true : false }}"><i class="{{ card.keyword.icon }} pr-1"></i>{{ card.keyword.name }}</div>
                                 <p>{{card.description}}</p>
                                 <a href="#!/cards/{{card.id}}" class="card-link"></a>
                             </div>
@@ -40,28 +39,37 @@
                 </div>
                 <div class="card-details px-5">
 
-                    <div class="border-bottom mb-3" ng-hide="{{ card.unitType == null ? true : false }}">
-                        <i class="fas fa-dice-d6"></i>
-                        <span>{{ card.unitType.name }}</span>
+                    <div class="border-bottom mb-3 pb-2" ng-hide="{{ card.unitType == null ? true : false }}">
+                        <div class="unittype">
+                            <i class="fas fa-dice-d6 pr-1"></i>
+                            <span>{{ card.unitType.name }}</span>
+                        </div>
                     </div>
-                    <div class="border-bottom mb-3 card-stats">
-                        <div class="d-flex align-items-center mb-3">
-                            <i class="{{ card.keyword.icon}} pr-2 pb-1"></i>
-                            <div><strong>{{ card.keyword.name }}</strong> - {{ card.keyword.description }}</div>
+                    <div class="border-bottom mb-3 pb-1 card-stats">
+                        <div class="d-flex align-items-center mb-2">
+                            <i class="{{ card.keyword.icon}} pr-1 text-black"></i>
+                            <span><strong>{{ card.keyword.name }}</strong> - {{ card.keyword.description }}</span>
                         </div>
                         <p>{{card.description}}</p>
                         <div class="d-flex">
-                            <div class="mr-3"><img src="/images/swords.png" alt="Swords - attack icon" />{{card.attack}}</div>
-                            <div><img src="/images/shield.png" alt="Shield - defence icon" />{{card.defence}}</div>
+                            <div class="mr-3 sword-icon" ><img src="/images/swords.png" alt="Swords - attack icon" />{{card.attack}}</div>
+                            <div class="shield-icon"><img src="/images/shield.png" alt="Shield - defence icon" />{{card.defence}}</div>
                         </div>
                     </div>
-                    <div class="border-bottom">
+                    <div class="">
+                        <h5 ng-hide="{{ card.artDescription == '' ? true : false }}">Art description</h5>
                         <p ng-hide="{{ card.artDescription == '' ? true : false }}"><em>{{card.artDescription}}</em></p>
-                        <div class="d-flex">
-                            <a href="{{card.imageFileLink}}" target="_blank" class="mr-3"><i class="far fa-image pr-2"></i>Open card art</a>
-                            <button id="download" onclick="downloadimage()"><i class="far fa-save pr-2"></i>Save card</button>
+                        <div class="d-flex align-items-start">
+                            <a href="{{card.imageFileLink}}" target="_blank" class="mr-3 btn btn-warning"><i class="far fa-image pr-2"></i>Open card art</a>
+                            <div class="d-flex flex-column-reverse">
+                                <small>Sorry, for now Card Art can not be saved</small>
+
+                                <button class="btn btn-primary" id="download" onclick="downloadimage()"><i class="far fa-save pr-2"></i>Save card</button>
+
+                            </div>
                         </div>
-                    </div>
+                            </div>
+                        </div>
                 </div>
 
 

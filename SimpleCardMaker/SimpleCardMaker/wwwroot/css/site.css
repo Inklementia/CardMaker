@@ -4,20 +4,117 @@ for details on configuring this project to bundle and minify static web assets. 
     box-sizing: border-box
 }
 body {
-    min-height: 100vh;
-    background-image: url(../images/dot-grid.png);
+
+    background-image: url(../images/lightpaperfibers.png);
     background-repeat: repeat;
+    color: rgba(51,51,51, 0.63);
 }
-a.navbar-brand {
-  white-space: normal;
-  text-align: center;
-  word-break: break-all;
+.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+    text-transform:uppercase
+}
+.card-gallery-link {
+    text-decoration: none;
+    color: #0c83b7;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 12px;
+}
+.buttons .btn{
+    width:40px;
+    text-align:center;
+    line-height:35px;
+    height:40px;
+    padding:0
+}
+.buttons .btn i{
+
+    padding-left:3px;
+}
+b, strong {
+    color: #000;
+}
+.header-wrapper{
+    position:relative;
+}
+header{
+    position:relative;
+    z-index:2
+}
+.stain-bg {
+    position: absolute;
+    top: -120px;
+    left: 0;
+    width: 100%;
+    height: 200px;
+    background-repeat-y: no-repeat;
+    background: url(../images/stain-bg-top.png);
+    background-position: top center;
+    background-size: 100%;
+}
+footer{
+    position:relative
+}
+.stain-bg-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100px;
+    background: url(../images/stain-bg-grey.png);
+    background-position: top center;
+    background-size: 100%;
+    background-repeat-y:no-repeat;
+}
+    .btn.btn-primary {
+        background-color: #0c83b7;
+        border-color: #0c83b7;
+    }
+.unittype {
+    background: #eee;
+    display: inline-block;
+    padding: 5px 15px;
+    border: 1px solid #eee;
+    border-radius: 255px 25px 225px 25px/25px 225px 25px 255px;
+    color: #222;
+}
+.text-black{
+    color:#000
+}
+.text-white {
+    color: #fff
+}
+.btn {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+.ng-hide:not(.ng-hide-animate)[ng-hide="false"] {
+    display: block !important;
+}
+[ng-hide="true"] {
+    display: none !important;
 }
 
-/* Provide sufficient contrast against white background */
-a {
-  color: #0366d6;
+a.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
 }
+.navbar-brand img{
+    max-width:200px;
+}
+.navbar{
+    border:0;
+    padding-left:0;
+    padding-right:0
+}
+    .navbar .nav-link{
+        text-transform:uppercase;
+        letter-spacing:2px;
+    }
+    /* Provide sufficient contrast against white background */
+    a {
+        color: #0366d6;
+    }
 .card {
     height: 360px;
     min-width: 250px;
@@ -149,7 +246,7 @@ a {
     .card-unittype::after {
         content: "";
         position: absolute;
-        border-top: 8px solid transparent;
+        border-top: 7px solid transparent;
         border-bottom: 19px solid transparent;
     }
     .card-unittype::before {
@@ -168,6 +265,17 @@ a {
     width: 100%;
     height: 100%;
     z-index: 4;
+}
+.sword-icon img, .shield-icon img{
+    max-width:30px;
+    margin-right:15px
+}
+.sword-icon, .shield-icon {
+    font-size: 35px;
+    font-family: "Cabin Sketch",cursive;
+    font-weight:500;
+    display:flex;
+    align-items:center
 }
 input.ng-touched.ng-invalid, .ng-submitted input.ng-invalid {
     border-color: #dc3545;
@@ -193,6 +301,50 @@ input.ng-touched.ng-valid, .ng-submitted input.ng-valid {
     grid-template-columns: 1fr 1fr 1fr 1fr ;
     grid-auto-columns:250px;
     grid-column-gap: 36px
+}
+.paint-bg {
+    background: #fff;
+    background-size: 140%;
+    background-repeat: no-repeat;
+    /* background-position: center; */
+    min-height: 110px;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    padding: 0px 6px 0;
+ margin-bottom:30px;
+    text-align: center;
+    border-radius: 255px 25px 225px 25px/25px 225px 25px 255px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #eee;
+  
+}
+    .paint-bg .item-id {
+        font-size: 30px;
+        line-height:30px;
+ 
+        font-family: "Cabin Sketch",cursive
+    }
+    .paint-bg .item-name {
+        font-size: 14px;
+        font-family: "Cabin Sketch", cursive;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+
+  
+    }
+    .paint-bg p {
+        font-size: 12px
+    }
+.welcome-baner{
+
+    height:80vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center
 }
 /* Sticky footer styles
 -------------------------------------------------- */
@@ -228,9 +380,13 @@ html {
   min-height: 100%;
 }
 .footer {
-
+ 
   bottom: 0;
   width: 100%;
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
+}
+.footer-text, main{
+    position:relative;
+    z-index:1
 }

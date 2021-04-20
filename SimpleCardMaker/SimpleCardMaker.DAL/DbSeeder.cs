@@ -29,6 +29,7 @@ namespace SimpleCardMaker.DAL
             context.Keywords.AddRange(keywords);
             context.SaveChanges();
             // adding unit types
+            // for some reason they are seeded backwards
             var unitTypes = new UnitType[]
             {
                 new UnitType{Name="Mistwraith",Description="Ghoustly cloud of glowing Mist"},
@@ -61,7 +62,7 @@ namespace SimpleCardMaker.DAL
                     ImageFileLink="https://cdn-lor.mobalytics.gg/production/images/set1/en_us/img/card/game/01SI014-full.webp", 
                     ArtDescription="These specters of the Isles shed their identities long ago to become amalgamations of pure, unappeasable hunger.",
                     KeywordId=2, 
-                    UnitTypeId=1},
+                    UnitTypeId=4},
                 new Card{
                     Name="Screeching Dragon",
                     Description="",
@@ -71,7 +72,7 @@ namespace SimpleCardMaker.DAL
                     ImageFileLink="https://cdn-lor.mobalytics.gg/production/images/set3/en_us/img/card/game/03DE006-full.webp",
                     ArtDescription="All creatures are fiercely protective of their young, but few are as well equipped to deal with would-be threats as a dragon.",
                     KeywordId=3,
-                    UnitTypeId=2},
+                    UnitTypeId=3},
                   new Card{
                     Name="Arachnoid Host",
                     Description="When I'm summoned, grant other Spider allies +2|+0.",
@@ -81,7 +82,7 @@ namespace SimpleCardMaker.DAL
                     ImageFileLink="https://cdn-lor.mobalytics.gg/production/images/set1/en_us/img/card/game/01NX023-full.webp",
                     ArtDescription="A single glance and you're hers. A single bite and you're theirs.",
                     KeywordId=2,
-                    UnitTypeId=3},
+                    UnitTypeId=2},
                    new Card{
                     Name="Vanguard Defender",
                     Description="When you summon an Elite, reduce my cost by 1.",
@@ -91,7 +92,7 @@ namespace SimpleCardMaker.DAL
                     ImageFileLink="https://cdn-lor.mobalytics.gg/production/images/set1/en_us/img/card/game/01DE020-full.webp",
                     ArtDescription="We didn't know who or what those creatures were. But we knew the faces of our fellow soldiers by our sides, and that was all we needed.",
                     KeywordId=4,
-                    UnitTypeId=4},
+                    UnitTypeId=1},
            };
 
             context.Cards.AddRange(cards);

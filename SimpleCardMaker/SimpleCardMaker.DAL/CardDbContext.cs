@@ -13,7 +13,6 @@ namespace SimpleCardMaker.DAL
         {
 
         }
-
         public DbSet<Card> Cards { get; set; }
         public DbSet<Keyword> Keywords { get; set; }
         public DbSet<UnitType> UnitTypes { get; set; }

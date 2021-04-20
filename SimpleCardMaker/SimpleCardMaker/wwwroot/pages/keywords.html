@@ -1,22 +1,29 @@
-﻿<div class="d-flex justify-content-between align-items-center" >
-    <h1>Keywords</h1>
-    <a href="#!/keywords/add" class="btn btn-dark">Add keyword</a>
+﻿<div class="container mb-3">
+
+    <h1>All Keywords</h1>
+    <div class="d-flex justify-content-between align-items-center">
+
+
+        <div>
+            Total {{keywords.length}} keyword{{keywords.length == 1 ? "" : "s"}}.
+        </div>
+        <a href="#!/keywords/add" class="btn btn-dark">Add keyword</a>
+      
+    </div>
+    </div>
+<div class="container mb-3">
+    <div class="row">
+        <div class="col-2" ng-repeat="keyword in keywords">
+            <div class="paint-bg">
+                
+                <div class="d-flex align-items-center my-1 text-black">
+                    <i class="{{keyword.icon}} pr-2"></i>
+                    <span class="item-name">{{keyword.name}}</span>
+
+                </div>
+                <p class="mb-0" ng-hide="{{keyword.description == '' ? true : false }}">{{keyword.description}}</p>
+            </div>
+        </div>
+
+        </div>
 </div>
-<table class="table">
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="keyword in keywords">
-            <td>{{keyword.id}}</td>
-            <td>{{keyword.name}}</td>
-            <td>{{keyword.description != "" ? keyword.description : "-"}}</td>
-
-        </tr>
-
-    </tbody>
-</table>
