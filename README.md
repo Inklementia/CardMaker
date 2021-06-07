@@ -1,2 +1,13 @@
-# WAD
-This is for WAD CW and id is 00008402
+# CardMaker
+Coursework for Web Application Development module
+
+## Aim
+To allow to create your own cards for real-time games with friends
+
+### Have learned
+- Code first approach
+- How to work with Asp.net core
+- How to apply Design Patterns
+- How to create SPA with Angular.js
+- Difference between MVC and API apllication
+- What is Depenedency Injection
